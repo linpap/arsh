@@ -1,0 +1,7 @@
+[28-Sep-2016 14:27:15 UTC] PHP Fatal error:  Call to a member function views() on null in /home/publicpost/public_html/beta2/local/app/Http/Controllers/PostsController.php on line 235
+[28-Sep-2016 14:27:28 UTC] PHP Fatal error:  Call to a member function views() on null in /home/publicpost/public_html/beta2/local/app/Http/Controllers/PostsController.php on line 235
+[28-Sep-2016 14:27:42 UTC] PHP Fatal error:  Call to a member function views() on null in /home/publicpost/public_html/beta2/local/app/Http/Controllers/PostsController.php on line 235
+[28-Sep-2016 15:52:57 UTC] PHP Fatal error:  Call to a member function views() on null in /home/publicpost/public_html/beta2/local/app/Http/Controllers/PostsController.php on line 232
+[29-Sep-2016 04:51:17 UTC] PHP Fatal error:  Call to a member function views() on null in /home/publicpost/public_html/beta2/local/app/Http/Controllers/PostsController.php on line 232
+[29-Sep-2016 12:36:15 UTC] PHP Fatal error:  Call to a member function views() on null in /home/publicpost/public_html/beta2/local/app/Http/Controllers/PostsController.php on line 232
+[29-Sep-2016 15:23:26 UTC] PHP Fatal error:  Call to a member function views() on null in /home/publicpost/public_html/beta2/local/app/Http/Controllers/PostsController.php on line 235
