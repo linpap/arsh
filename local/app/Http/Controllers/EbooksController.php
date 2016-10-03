@@ -16,6 +16,7 @@ use App\User;
 use App\Navbar;
 use App\Footer;
 use App\Sidebar;
+use App\Rightblock;
 use App\Adv;
 use Auth;
 use Config;
@@ -230,8 +231,18 @@ class EbooksController extends Controller
 
         $advs = Adv::orderBy('position','DESC')->where('section','ebook_single')->get();
 
+
         $topHorizontalBanner="";
+        $firstSidebarRight="";
+        $secondSidebarRight="";
+        $rightSingle="";
         $topHorizontalBannerScript="";
+        $firstSidebarRightScript="";
+        $secondSidebarRightScript="";
+        $rightSingleScript="";
+        $thirdSidebarVertical ="";
+        $thirdSidebarVerticalScript ="";
+    
     
         foreach($advs as $adv){
             if($adv->position == '0'){
@@ -243,11 +254,21 @@ class EbooksController extends Controller
             }
         }
 
+        $rightblock = Rightblock::where('type','ebook_single')->first();
 
         return view('front.ebooks.show')
+        ->with('rightblock',$rightblock)
         ->with('related_ebooks',$related_ebooks)
         ->with('topHorizontalBanner',$topHorizontalBanner)
+        ->with('firstSidebarRight',$firstSidebarRight)
+        ->with('secondSidebarRight',$secondSidebarRight)
+        ->with('rightSingle',$rightSingle)
+        ->with('thirdSidebarVertical',$thirdSidebarVertical)
+        ->with('thirdSidebarVerticalScript ',$thirdSidebarVerticalScript)
         ->with('topHorizontalBannerScript',$topHorizontalBannerScript)
+        ->with('firstSidebarRightScript',$firstSidebarRightScript)
+        ->with('secondSidebarRightScript',$secondSidebarRightScript)
+        ->with('rightSingleScript',$rightSingleScript)
         ->with('related_ebooks',$related_ebooks)
         ->with('categories',$categories)
         ->with('comments',$comments)
@@ -265,8 +286,19 @@ class EbooksController extends Controller
 
         $advs = Adv::orderBy('position','DESC')->where('section','ebook_single')->get();
 
+
         $topHorizontalBanner="";
+        $firstSidebarRight="";
+        $secondSidebarRight="";
+        $thirdSidebarVertical="";
+        $bottomHorizontal="";
         $topHorizontalBannerScript="";
+        $firstSidebarRightScript="";
+        $secondSidebarRightScript="";
+        $thirdSidebarVerticalScript="";
+        $bottomHorizontalScript="";
+        $thirdSidebarVertical ="";
+        $thirdSidebarVerticalScript="";
     
         foreach($advs as $adv){
             if($adv->position == '0'){
@@ -277,9 +309,21 @@ class EbooksController extends Controller
                 }
             }
         }
+
+        $rightblock = Rightblock::where('type','ebook')->first();
+
         return view('front.ebooks.index')
+        ->with('rightblock',$rightblock)
         ->with('topHorizontalBanner',$topHorizontalBanner)
+        ->with('firstSidebarRight',$firstSidebarRight)
+        ->with('secondSidebarRight',$secondSidebarRight)
+        ->with('rightSingle',$rightSingle)
+        ->with('thirdSidebarVertical',$thirdSidebarVertical)
+        ->with('thirdSidebarVerticalScript ',$thirdSidebarVerticalScript)
         ->with('topHorizontalBannerScript',$topHorizontalBannerScript)
+        ->with('firstSidebarRightScript',$firstSidebarRightScript)
+        ->with('secondSidebarRightScript',$secondSidebarRightScript)
+        ->with('rightSingleScript',$rightSingleScript)
         ->with('related_ebooks',$related_ebooks)
         ->with('ebook',$ebook)
         ->with('navbars',$navbars)

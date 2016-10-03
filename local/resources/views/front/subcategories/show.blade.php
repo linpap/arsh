@@ -1,4 +1,4 @@
-@extends('layouts.front')
+
 @section('css')
 <link rel="stylesheet" href="{{asset('dist/css/home-logged.css')}}">
 @endsection

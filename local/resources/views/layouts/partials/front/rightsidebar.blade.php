@@ -25,8 +25,27 @@
                 <div class="col-lg-12 col-md-8 col-sm-8 col-xs-10 col-lg-offset-0 col-md-offset-2 col-sm-offset-2 col-xs-offset-1 first">
 
                     <h4 align="center"><a href="#" style="margin-right:10px; font-weight: bold; font-size: 1.3em; text-decoration:none">Link#1</a><a href="#" style="margin-right:10px;font-weight: bold; font-size: 1.3em; text-decoration:none">Link #2</a><a href="#" style="font-weight: bold; font-size: 1.3em; text-decoration:none">Link #3</a></h4>
+                    <?php 
+                        //Get best user.
 
-                    <a href="#"><img class="img-responsive center-block" src="{{asset('img/girl.jpg')}}" alt="" style="margin-bottom:20px"></a>
+                        $user =  DB::table('users')
+                         ->orderBy('points', 'DESC')
+                         ->first();
+                        $image=null;
+                        $imageurl=null;
+                        if($user->profile_image && $user->facebook_id == null && $user->twitter_id == null){                  
+                            $image = $user->profile_image;
+                        }elseif($user->facebook_id != null || $user->twitter_id != null){
+                            $imageurl = $user->profile_image;
+                        }
+
+
+                     ?>
+                    @if($image)
+                    <a href="#"><img class="img-responsive center-block" src="{{asset('img/users/user_'.$image)}}" alt="The Public Post" style="margin-bottom:20px"></a>
+                    @elseif(isset($imageurl))
+                    <a href="#"><img class="img-responsive center-block" src="{{$imageurl}}" alt="The Public Post" style="margin-bottom:20px"></a>
+                    @endif
 
                 </div>
 
@@ -61,26 +80,18 @@
                 <!-- Blog Categories Well -->
 
                 <div class="well categories col-lg-12 col-md-8 col-sm-8 col-xs-10 col-lg-offset-0 col-md-offset-2 col-sm-offset-2 col-xs-offset-1">
-
-                    <h4 style="text-align:center">Lorem Itsum</h4>
-
+                    @if($rightblock != '')
+                    <h4 style="text-align:center">{{$rightblock->title}}</h4>
+                    @endif
                     <div class="row">
 
                         <div class="col-lg-12">
-
-                            <h5>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-
-                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-
-                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-
-                            consequat.</h5><br>
-
-                            <h6>Lorem ipsum dolor sit amet</h6>
-
+                            @if($rightblock != '')
+                            <h4>{{$rightblock->description}}</h4><br>
+                            @endif
                             <hr />
 
-                            <h4 style="color:blue;">Lorem ipsum dolor sit amet</h4>
+                            <h4 style="color:blue;">Social Networks</h4>
 
                             <div class="col-lg-12 social col-md-10 col-sm-10 col-xs-12 col-lg-offset-0 col-md-offset-1 col-sm-offset-1 col-xs-offset-0" style="padding:0">
 

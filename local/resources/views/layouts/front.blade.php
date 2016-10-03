@@ -101,11 +101,9 @@
 
 
 <body>
-
 @if(Auth::check())
-
+<div class="myuser" data-user="{{Auth::user()->id}}"></div>
 <div class="myuser" data-email="{{Auth::user()->email}}"></div>
-
 @endif
 
 <div id="fb-root"></div>
@@ -156,7 +154,10 @@
 
 <script src="{{asset('dist/js/jquery.metadata.js')}}"></script>
 
-
+<script type="text/javascript">
+var addthis_config = addthis_config||{};
+addthis_config.lang = 'en' //show in Spanish regardless of browser settings;
+</script>
 
 <script>
 
@@ -174,27 +175,44 @@ $('.icono-toggle').toggleClass('glyphicon-triangle-top');
 
 });
 
-var userid = $('.user-name').data('user');
+var userid = $('.myuser').data('user');
 
-
+console.log('USSSSSSS '+userid);
 
 $.ajax({
 
     
 
-    url: '{{ url('/points/getUserPoints') }}'+ '/' + 1,
+    url: '{{ url('/points/getUserPoints') }}'+ '/' + userid ,
 
     type: 'GET',
 
     success: function(data) {
 
-        console.log('USER POINTS -->'+data);
 
         $(".userpoints").text(data);
 
     }
 
 });
+
+
+        $.ajax({
+
+            
+
+            url: '{{ url('/points/addpoints') }}' + '/' + userid,
+
+            type: 'POST',
+
+            data:{_token:token},
+
+            success: function(data) {
+                console.log(data['msg']);
+            }
+
+        });
+
 
 
 

@@ -51,7 +51,7 @@
                         <a href="#" style="text-decoration:none;color:black">
                             <h3>{{$video->title}}</h3>
                             <p class="tiempo">
-                                <i class="fa fa-archive category" data-id="{{$post->category()->first()->id}}" aria-hidden="true"></i>  
+                                <i class="fa fa-archive category" data-id="{{$video->category()->first()->id}}" aria-hidden="true"></i>  
                                 বিভাগ: {{$video->category()->first()->name}}
                                 @if(Auth::check())
                                     @if(Auth::user()->type == 'subscriber')                            
@@ -75,27 +75,27 @@
                     <div class="ad-bottom col-lg-12">
                         <img class="center-block img-responsive" src="https://placeholdit.imgix.net/~text?txtsize=19&txt=150%C3%97300&w=150&h=300" alt="" style="margin-top:50px;margin-bottom:50px">
                     </div>
-                    <div class="col-lg-12" style="height:60px;padding:0">
+                    <div class="col-lg-12" style="height:10px;padding:0">
                         <hr style="padding:0;border:1px solid #d8d8d8;">
                     </div>
-                <div class="col-lg-10 col-md-10 col-sm-9 col-xs-12 portafolio-content">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 portafolio-content">
                     <!-- Projects Row -->
                 <div class="user col-lg-2 col-md-2 col-sm-2 col-xs-12">
                     @if($video->user()->first()->profile_image && $video->user()->first()->facebook_id == null && $video->user()->first()->twitter_id == null)
                         <img class="img-responsive center-block img-circle" src="{{asset('img/users/profile/profile_'.$video->user()->first()->profile_image)}}" alt="">
                     @elseif($video->user()->first()->facebook_id != null || $video->user()->first()->twitter_id != null )
-                     <img src="{{$video->user()->first()->profile_image}}" style="max-width:40px" alt="" class="img-circle" alt="The Post Page"> 
+                     <img src="{{$video->user()->first()->profile_image}}" style="max-width:40px" alt="" class="img-circle center-block" alt="The Post Page"> 
                     @else
                     <img src="{{asset('img/profile.png')}}" style="max-width:40px" alt="" class="img-circle" alt="The Post Page ">
                     @endif
                     <p class="text-center user-name" data-user="{{$video->user()->first()->id}}">{{$video->user()->first()->name}}</p>
-                     <p class="user-name">Points: <span class=" userpoints"></span></p>
+                     <p class="user-name text-center">Points: <span class=" userpoints"></span></p>
                     <div class="redes col-lg-10 col-md-8 col-sm-12 col-xs-12 col-lg-offset-1 col-md-offset-2 col-sm-offset-0 col-xs-offset-0" style="padding:0">
-                            <p><a href="http://facebook.com/{{$video->user()->first()->facebook_real}}"><span class="icon icon-facebook"></span></a>
+                            <p class="text-center"><a href="http://facebook.com/{{$video->user()->first()->facebook_real}}"><span class="icon icon-facebook"></span></a>
                             <a href="http://twitter.com/{{$video->user()->first()->twitter_real}}"><span class="icon icon-twitter"></span></a>
                     </div>
                 </div>
-                <div class="contenido col-lg-12 col-md-10 col-sm-10 col-xs-12">
+                <div class="contenido col-lg-10 col-md-10 col-sm-10 col-xs-12">
                  {!!$video->content!!}      
                 
                 <div class="clearfix"></div>
@@ -139,7 +139,7 @@
                 </div>
                 <div class="col-xs-12" style="border:1px solid #eee;margin:20px 0px;"></div>
                 <h2>ফেসবুক মন্তব্য</h2>
-                <div class="fb-comments" data-href="{{url()->current()}}" data-numposts="5"></div>
+                <div class="fb-comments col-xs-12" data-href="{{url()->current()}}" data-numposts="5"></div>
                 <div class="col-xs-12" style="border:1px solid #eee;margin:20px 0px;"></div>
 
                 <h2>মন্তব্য</h2>
@@ -177,26 +177,28 @@
                 @if(Auth::check())
                     <h4>মতামত দিন:</h4>
                     
-                        <div class="col-lg-21 col-md-2 col-sm-2 col-xs-2 nopadding">
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 nopadding">
                         <a class="pull-left" href="#">
                         @if(Auth::user()->first()->profile_image && Auth::user()->first()->facebook_id == null && Auth::user()->first()->twitter_id == null)
                             <img style="max-width:80px" alt="" class="img-circle" src="{{asset('img/users/profile/profile_'.Auth::user()->first()->profile_image)}}" alt="The Public Post">
                         @elseif(Auth::user()->first()->facebook_id != null || Auth::user()->first()->twitter_id != null)
-                            <img style="max-width:100px" alt="" class="img-circle" src="{{Auth::user()->first()->profile_image}}" alt="The Public Post">
+                            <img alt="" class="img-responsive" src="{{Auth::user()->first()->profile_image}}" alt="The Public Post">
                         @else
                             <img src="{{asset('img/profile.png')}}" style="max-width:40px" alt="" class="img-circle" alt="The Post Page ">
                         @endif  
                         </a>
                         </div>
+                        <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
                         <form role="form" action="{{url('comment/videos/'.$id.'/'.Auth::user()->id)}}" method="POST">
                             {{ csrf_field() }}
-                            <div class="form-group col-lg-10 col-md-10 col-sm-9 col-xs-9 nopadding">
+                            <div class="form-group col-xs-12 nopadding">
                                 <textarea class="form-control ta-styl" name="comment" rows="3"></textarea>
                             </div>
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 nopadding m-0">
                                 <button type="submit" class="btn btn-primary">পাঠান</button>
                             </div>
                         </form>
+                        </div>
                 @else                    
                     মন্তব্য করতে আপনাকে অবশ্যই লগইন করতে হবে.
                 @endif
@@ -206,28 +208,28 @@
                        
                         <form role="form" action="{{url('/comment/videos/'.$id)}}" method="POST">
 
-                        <div class="mensaje m-t10">
+                        <div class="mensaje m-t10 col-xs-12 nopadding">
                             <h2>যোগাযোগ</h2>
                             <textarea class="ta-styl2 form-control" name="comment"></textarea>
                         </div>
                             {{ csrf_field() }}
-                            <div class="form col-md-5 nopadding m-t20">
+                            <div class="form col-md-5 col-xs-12 nopadding m-t20">
                                 <p>Name*<br>
                                 <input type="text" name="name" class="form-control w100porcent" required>
                                 </p>
                             </div>
                             <div class="col-md-2"></div>
-                            <div class="form col-md-5 nopadding m-t20">
+                            <div class="form col-md-5 col-xs-12 nopadding m-t20">
                                 <p>Web<br>
                                 <input type="text" name="web" class="form-control w100porcent">
                                 </p>
                             </div>
-                            <div class="form col-md-5 nopadding m-t20">
+                            <div class="form col-md-5 col-xs-12 nopadding m-t20">
                                 <p>Email*<br>
                                 <input type="email" name="email" class="form-control w100porcent" required>
                                 </p>
                             </div>
-                            <div class="form col-md-12 m-t20 nopadding">
+                            <div class="form col-xs-12 m-t20 nopadding">
                                 <p>CAPTCHA Code* - Resolve this easy math account<br>
                                 <?php 
                                 $result=0;
@@ -243,7 +245,7 @@
                                 <p class="alert-danger captcha-error">ত্রুটি আবার চেষ্টা করুন.</p>
                                 <p class="alert-success captcha-correct">নির্ভুল!</p>
                             </div>
-                            <div class="form col-md-12 m-t20 nopadding">
+                            <div class="form col-xs-12 m-t20 nopadding">
                             <button type="submit" id="submit" class="btn btn-primary m-b20">পাঠান</button>
                             </div>
                             </form>

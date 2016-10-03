@@ -1,6 +1,6 @@
 @extends('layouts.front')
 @section('css')
-<link rel="stylesheet" href="{{asset('dist/css/home-logged.css')}}">
+<link rel="stylesheet" href="{{asset('dist/css/style.css')}}">
 @endsection
 @section('title','Category')
 @section('content')

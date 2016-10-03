@@ -28,6 +28,7 @@ class PostRequest extends Request
             'category_id' => 'required',
             'tags' => 'required',
             'content' => 'required|min:250'
+            'image' => 'required'
         ];
 
         return $rules;

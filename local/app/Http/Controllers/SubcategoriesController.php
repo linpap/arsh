@@ -18,6 +18,7 @@ use App\Navbar;
 use App\Footer;
 use App\Adv;
 use App\Sidebar;
+use App\Rightblock;
 use App\Category;
 use Auth;
 use Config;
@@ -133,11 +134,13 @@ class SubcategoriesController extends Controller
         $secondSidebarRight="";
         $thirdSidebarVertical="";
         $bottomHorizontal="";
+        $bottomSquare ="";
         $topHorizontalBannerScript="";
         $firstSidebarRightScript="";
         $secondSidebarRightScript="";
         $thirdSidebarVerticalScript="";
         $bottomHorizontalScript="";
+        $bottomSquareScript="";
     
         foreach($advs as $adv){
             if($adv->position == '0'){
@@ -164,6 +167,12 @@ class SubcategoriesController extends Controller
                 }else{
                     $thirdSidebarVerticalScript = $adv->script;
                 }
+            }elseif($adv->position == '4'){
+                if($adv->image != ''){
+                    $bottomSquare= $adv->image;                    
+                }else{
+                    $bottomSquareScript = $adv->script;
+                }
             }elseif($adv->position == '5'){
                 if($adv->image != ''){
                     $bottomHorizontal = $adv->image;                    
@@ -172,15 +181,17 @@ class SubcategoriesController extends Controller
                 }
             }
         }
-        
-
+        $rightblock = Rightblock::where('type','category')->first();
         return view('front.subcategories.show')
+        ->with('rightblock',$rightblock)
         ->with('subcategory',$subcategory)    
         ->with('topHorizontalBanner',$topHorizontalBanner)
         ->with('firstSidebarRight',$firstSidebarRight)
         ->with('secondSidebarRight',$secondSidebarRight)
         ->with('thirdSidebarVertical',$thirdSidebarVertical)
-        ->with('bottomHorizontal',$bottomHorizontal)        
+        ->with('bottomHorizontal',$bottomHorizontal)      
+        ->with('bottomSquare',$bottomSquare)         
+        ->with('bottomSquareScript',$bottomSquareScript)        
         ->with('topHorizontalBannerScript',$topHorizontalBannerScript)
         ->with('firstSidebarRightScript',$firstSidebarRightScript)
         ->with('secondSidebarRightScript',$secondSidebarRightScript)

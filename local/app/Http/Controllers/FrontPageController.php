@@ -15,6 +15,7 @@ use App\Category;
 use App\Navbar;
 use App\Footer;
 use App\Adv;
+use App\Rightblock;
 
 use App\Photo;
 class FrontPageController extends Controller
@@ -36,6 +37,8 @@ class FrontPageController extends Controller
         $lastest_photos = Photo::orderBy('id','DESC')->where('status','approved')->paginate(4);
         $lastest_ebooks = Ebook::orderBy('id','DESC')->where('status','approved')->paginate(4);
         $categories = Category::all();
+
+        $rightblock = Rightblock::where('type','home')->first();
         $images = new Image();
         $featured_posts->each(function($post){
                 $post->images->each(function($postimg){
@@ -121,6 +124,7 @@ class FrontPageController extends Controller
        
         return view('front.welcome')
         ->with('advs',$advs)
+        ->with('rightblock',$rightblock)
         ->with('topHorizontalBanner',$topHorizontalBanner)
         ->with('firstSidebarRight',$firstSidebarRight)
         ->with('secondSidebarRight',$secondSidebarRight)

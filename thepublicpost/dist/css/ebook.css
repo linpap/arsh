@@ -1,0 +1,276 @@
+/*!
+ * Start Bootstrap - Blog Post (http://startbootstrap.com/)
+ * Copyright 2013-2016 Start Bootstrap
+ * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
+ */
+
+body {
+    background-color: #e7edee;
+    padding-top: 65px; /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+}
+
+.navbar-inverse {
+	background-color: #0061d8;
+	border-color:transparent;
+}
+
+/*CONFIGURACIONES DEL MENU*/
+div.body {
+	padding:10px;
+}
+
+nav .login {
+	float:right;
+	display: block;
+}
+
+.navbar-header .logo {
+	margin-top:5px;
+}
+
+.main-menu .ul {
+	width: 81%;
+	float: right;
+}
+
+.main-menu ul {
+	list-style: none;
+    margin: 0;
+    padding: 0;
+    text-align: justify;
+}
+
+.main-menu ul:after{
+    content: ".";
+    display: inline-block;
+    height: 100%;
+    visibility: hidden;
+}
+
+.main-menu ul li {
+	display: inline-block;
+}
+
+@media (max-width: 1200px) {
+	.main-menu .ul {
+	width: 77%;
+	}
+
+	div.container .navbar-nav .li-items {
+		width: 7%;
+	}
+}
+
+@media (max-width: 1000px){
+	.navbar-header {
+ 		width: 100%;
+	}
+	.navbar-header .logo {
+ 		margin: 0em 35%;
+	}
+	.main-menu .ul {
+		width: 100%;
+	}
+
+	/*div.container div.row .post{
+	padding-top: 0px;
+	}*/
+}
+
+@media (max-width: 768px) {
+	.navbar-header {
+ 		width: auto;
+	}
+	.navbar-header .logo {
+ 		margin:0;
+	}
+
+	.main-menu .ul {
+		width:auto;
+	}
+
+	nav .login {
+	float:left;
+	margin-left:0px;
+	}
+}
+
+@media (max-width: 767px) {
+
+	nav .login {
+	float:left;
+	margin-left:0px;
+}
+
+	div.container .navbar-nav .li-items, div.container .navbar-nav .li-items2 {
+		width: 100%;
+	}
+
+	.ebook {
+		margin:0;
+	}
+}
+
+@media (min-width: 1200px) {
+	.titulo-ebook{
+		padding-left:0px!important;
+	}
+}
+
+@media screen and (max-width: 991px) and (min-width: 768px) {
+	.titulo-ebook {
+		padding-right: 0!important;
+		padding-left: 15px!important;
+	}
+}
+
+@media screen and (max-width: 1200px) and (min-width: 992px) {
+	.titulo-ebook {
+		padding-right: 0!important;
+		padding-left: 30px!important
+	}
+}
+
+@media screen and (max-width: 767px) and (min-width: 0px) {
+	.titulo-ebook {
+		margin-right:0!important;
+	}
+}
+
+
+/*PORTAFOLIO*/
+
+.portafolios {
+	margin-bottom:50px;
+}
+
+.categorias ul li {
+	font-size:12px;
+	padding:5px 10px;
+	border:none;
+	display:block;
+}
+
+.categories button {
+	border:none;
+}
+
+.categories .dropdown-menu, .categories .dropdown-menu:focus, .categories .dropdown-menu:active {
+	background-color: rgb(0, 138, 255)!important;
+	margin: -1px 0 0;
+	padding-top:0px;
+	padding-bottom:0px;
+}
+
+.categories .dropdown-menu li {
+	background-color: rgb(0, 138, 255);
+	border: 1px solid #7b98ff;
+}
+
+.categories .dropdown-menu li a {
+	background-color: rgb(0, 138, 255);
+}
+
+.categories .dropdown-menu li:hover a, .categories .dropdown-menu li:active a, .categories .dropdown-menu li:focus a {
+	background-color: rgb(0, 138, 255)!important;
+}
+
+.categorias ul:nth-of-type(1) {
+  list-style-position: outside;
+  padding: 0;
+  border-left: solid 2px black;
+}
+
+@media (max-width: 370px) {
+	.categorias {
+		width: 100%;
+		padding:0;
+	}
+	.categorias ul li {
+		font-size: 20px;
+		display: block;
+	}
+
+	.portafolio-content {
+		width: 100%;
+	}
+}
+
+/*CONFIGURACIONES DEL FOOTER*/
+@media (max-width: 768px) {
+
+	footer {
+	height: 200px;
+	background-color: white;
+	border-top:5px solid #0859a9;
+	}
+
+	footer div.footer {
+	max-width:1170px; margin:auto; background-color:white; width:auto;
+	}
+}
+
+@media (max-width: 470px) {
+	footer .items {
+	padding-right:5%!important;
+}
+}
+
+.row  {
+	background-color: #fff;
+}
+
+a{
+font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;	
+}
+
+	.titulo-ebook{
+		padding:0;
+		margin-right: 100px;
+	}
+
+@media (max-width: 768px) {
+	.navbar-header {
+ 		width: auto;
+	}
+	.navbar-header .logo {
+ 		margin:0;
+	}
+
+	.main-menu .ul {
+		width:auto;
+	}
+
+	nav .login {
+	float:left;
+	margin-left:0px;
+	}
+
+	footer {
+	height: 200px;
+	background-color: white;
+	border-top:5px solid #0859a9;
+}
+
+footer div.footer {
+	max-width:1170px; margin:auto; background-color:white; width:auto;
+}
+}
+
+
+
+@media (max-width: 960px) {
+	body {
+		background-color: #fff;
+	}
+
+}
+footer {
+	background-color: white;
+	border-top:5px solid #0859a9;
+	height: 200px;
+}
+
+footer div.footer {
+	max-width:1170px; margin:auto; background-color:white; width:auto;
+}

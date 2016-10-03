@@ -1,0 +1,33 @@
+@font-face {
+    font-family: 'sutonnymjregular';
+    src: url('http://www.public-post.com/beta2/dist/css/sutom___-webfont.woff2') format('woff2'),
+         url('http://www.public-post.com/beta2/dist/css/sutom___-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+p,a,span,h1,h2,h3,h4,h5,h6,strong { font-family: 'sutonnymjregular' !important; } .tabs.center-block { width: 100% !important; }
+.tabs.center-block > h3 { font-size:18px; font-weight:bold; font-family: 'sutonnymjregular'; }
+.navbar { display: block !important; } .items { font-size: 22px !important; } .input-group .btn.btn-default { background: transparent; }
+.sidebar-title-carousel a { display: block; font-family: "sutonnymjregular"; font-size: 15px !important; font-weight: 600 !important; height: auto !important; letter-spacing: 0.5px; line-height: 22px; padding-bottom: 0; width: 100% !important;}
+.carousel-caption { background-color: rgba(0, 0, 0, 0.4); }  .glyphicon.glyphicon-chevron-right { display: none; }
+.sidebar-title-carousel { border-bottom: 1px solid rgb(220, 221, 222); line-height: unset; padding-right:0; margin-bottom: 10px; padding-bottom: 10px;}
+.copy { font-family: arial !important; } .footer hr { display: none; } .caption { width: 100%; } .social > div { margin-right: 6px !important; }
+.navbar-inverse .navbar-nav > li > a { color:#b8b8b8 !important; font-size:14px; } .pull-left > h4 { font-size: 18px; color: #000; }
+.login > div a { color: #b8b8b8 !important; padding: 0 !important;} .ns-img { background-size: cover !important; }
+.glyphicon-time { background: url(http://www.public-post.com/beta2/dist/icons/time.png) center top no-repeat; text-indent:-999px; width: 14px; height: 14px;}
+.post-destacados-titulo.col-lg-6.col-md-8.col-sm-9.col-xs-9 > p  { text-align: left !important; color: #b2aaab; }
+.post-destacados-titulo.col-lg-6.col-md-8.col-sm-9.col-xs-9 > p > a { color: #4d4541 !important; font-size: 16px !important; }
+.tabs.center-block span,.tabs h2 span { color: #0054a6; } .post div a h3 { color: #000; font-size:20px; font-weight: bold; margin-top: -12px !important;}
+.glyphicon.glyphicon-chevron-right { background: url(http://www.public-post.com/beta2/dist/icons/arrowl.gif) no-repeat; font-size:0; height: 35px; }
+.glyphicon.glyphicon-chevron-left { background: url(http://www.public-post.com/beta2/dist/icons/arrowr.gif) no-repeat; font-size:0; height: 35px; }
+.sidebar { padding-top: 20px; } .well .input-group .form-control { border:none; background: none; } 
+.input-group .btn.btn-default { padding: 0; } .input-group .btn.btn-default {  border:0px solid #e0e0e0;}
+.glyphicon.glyphicon-search { background: url(http://www.public-post.com/beta2/dist/icons/search.png) center top no-repeat; text-indent:-999px; width: 35px; height: 29px;}
+.well .input-group { border:1px solid #e0e0e0; background: #f9f9f9; } .form-control:focus { box-shadow: 0 0 0; }
+.tabs h2 { font-size: 26px; font-weight: 600; margin: 50px 0 42px;} .icon.icon-eye { color: #a5a5a5; }
+.post-content { color: #7c7a7a; font-size: 14px; margin-bottom: 20px; overflow-wrap: break-word;}
+.btn-primary { background-color:#7fa9d2; border:none !important; border-radius:0 !important; color:#000;font-size:12px; padding: 3px 8px; }
+.title a strong { display: block; font-size: 17px; line-height: 18px; margin: 15px 0 !important;}
+.row.hover:hover { background: #e5eef6; } .col-lg-9.post hr { margin: 0; } .hover { padding: 20px 0; }
+.well h4,.well h5,.well h6,.login a { font-family: arial !important; } 
+ .subcategories li a {font-size: 15px;display: block !Important;padding: 5px 20px; color: #fff !important;}

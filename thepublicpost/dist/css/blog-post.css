@@ -1,0 +1,270 @@
+/*!
+ * Start Bootstrap - Blog Post (http://startbootstrap.com/)
+ * Copyright 2013-2016 Start Bootstrap
+ * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
+ */
+
+body {
+    background-color: #e7edee;
+    padding-top: 65px; /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+}
+
+.navbar-inverse {
+	background-color: #0061d8;
+	border-color:transparent;
+}
+
+/*CONFIGURACIONES DEL MENU*/
+div.container {
+	padding:0;
+}
+
+nav .login {
+	float:right;
+	display: block;
+}
+
+.navbar-header .logo {
+	margin-top:5px;
+}
+
+.main-menu .ul {
+	width: 81%;
+	float: right;
+}
+
+.main-menu ul {
+	list-style: none;
+    margin: 0;
+    padding: 0;
+    text-align: justify;
+}
+
+.main-menu ul:after{
+    content: ".";
+    display: inline-block;
+    height: 100%;
+    visibility: hidden;
+}
+
+.main-menu ul li {
+	display: inline-block;
+}
+
+/*//CONFIGURACIONES DEL MENU//*/
+
+.container .salto {
+	display: none;
+}
+
+.container .icon-eye {
+	margin-left:10px
+}
+
+.container p.tiempo {
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif!important;
+	text-align: left;
+}
+
+.container p.tiempo span.glyphicon-time, .container p.tiempo span.icon-eye {
+	margin-right: 10px
+}
+
+.contenido p {
+	text-align:justify;
+}
+
+.row  {
+	background-color: #fff;
+}
+
+a{
+font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;	
+}
+
+.user a {
+	text-decoration: none;
+	padding-left: 5px;
+}
+
+.first {
+	border-bottom:5px solid #0054a6;
+	border-top:5px solid #0054a6;
+}
+
+.well {
+	border:none;
+	background-color: white;
+}
+
+.categories {
+	border:1px solid #d8d8d8;
+	border-top:5px solid #0054a6;
+}
+
+@media (max-width: 1200px) {
+	.main-menu .ul {
+	width: 77%;
+	}
+
+	div.container .navbar-nav .li-items {
+		width: 7%;
+	}
+}
+
+@media (min-width: 980px){
+	.comentarios form textarea.form-control {
+	margin-left:3%!important;
+}
+}
+@media (max-width: 1000px){
+	.navbar-header {
+ 		width: 100%;
+	}
+	.navbar-header .logo {
+ 		margin: 0em 35%;
+	}
+	.main-menu .ul {
+		width: 100%;
+	}
+
+	div.container div.row .post{
+	padding-top: 60px;
+	}
+
+
+	
+
+}
+
+@media (max-width: 960px) {
+	body {
+		background-color: #fff;
+	}
+
+}
+
+@media (max-width: 768px) {
+	.navbar-header {
+ 		width: auto;
+	}
+	.navbar-header .logo {
+ 		margin:0;
+	}
+
+	.main-menu .ul {
+		width:auto;
+	}
+
+		div.container .navbar-nav .li-items, div.container .navbar-nav .li-items2 {
+		width: 100%;
+	}
+
+	nav .login {
+	float:left;
+	margin-left:0px;
+}
+	div.container div.row .post{
+		padding-top: 0px;
+	}
+
+	.container .glyphicon-time {
+		margin-left:10px
+	}
+
+	.container .icon-printer {
+		margin-right:10px;
+	}
+
+	.container .titulo-blog {
+		margin-left:10px;
+	}
+
+	.user .redes {
+		margin-bottom: 10px;
+	}
+
+	.user a {
+		margin:0 2px;
+		padding:0;
+		font-size:20px;
+	}
+
+	.user p {
+		padding:0px;
+		font-size:20px;
+		margin:0;
+		text-align: center;
+	}
+
+	.categories .youtube {
+		margin-right:0!important;
+	}
+
+	.categories .facebook {
+		margin-left:0!important;
+	}
+
+
+	.container span.pull-right {
+		margin-right:20px;
+		margin-left:10px;
+		font-size: 40px
+	}
+
+}
+
+footer {
+	height: 200px;
+	background-color: white;
+	border-top:5px solid #0859a9;
+}
+
+footer div.footer {
+	max-width:1170px; margin:auto; background-color:white; width:auto;
+}
+
+@media (max-width: 590px) {
+	.comentarios form textarea.form-control {
+	width: 95%!important;
+	margin-left:5%!important;
+}
+}
+
+@media (max-width: 520px) {
+	.comentarios form textarea.form-control {
+	width: 90%!important;
+	margin-left:10%!important;
+}
+
+	.container span.glyphicon-time, .container span.icon-eye {
+		font-size: 15px
+	}
+
+
+.you-may-like {
+	font-size:10px;
+} 
+
+.sponsored {
+	font-size:10px;
+}
+
+.container .salto {
+	display: block;
+}
+}
+
+@media (max-width: 470px) {
+	.comentarios form textarea.form-control {
+	width: 85%!important;
+	margin-left:15%!important;
+}
+	footer .items {
+	padding-right:5%!important;
+}
+	.categories, .first {
+		width: 100%!important;
+		margin:0!important;
+	}
+}

@@ -20,10 +20,13 @@
 						<th>ID <span class="pull-right fa fa-sort"></span></th>
 						<th>Title <span class="pull-right fa fa-sort"></span> </th>
 						<th>Categories <span class="pull-right fa fa-sort"></span></th>
-						<th>Ebook Link <span class="pull-right fa fa-sort"></span></th>		
-						<th>User <span class="pull-right fa fa-sort"></span></th>						
+						<th>Ebook Link <span class="pull-right fa fa-sort"></span></th>
+						<th>User <span class="pull-right fa fa-sort"></span></th>
 						<th>Status <span class="pull-right fa fa-sort"></span></th>
 						<th>Views <span class="pull-right fa fa-sort"></span></th>
+						<th>Shares <span class="pull-right fa fa-sort"></span></th>
+						<th>Likes <span class="pull-right fa fa-sort"></span></th>
+						<th>Points <span class="pull-right fa fa-sort"></span></th>
 						<th>Action</th>
 					</thead>
 
@@ -37,6 +40,9 @@
 								<td>{{$ebook->user->name}}</td>
 								<td>{{$ebook->status}}</td>
 								<td>{{$ebook->views}}</td>
+								<td>{{$ebook->shares}}</td>
+								<td>{{$ebook->likes}}</td>
+								<td>{{$ebook->points}}</td>
 								<td>
 									@if($ebook->status == 'approved' && Auth::user()->type=='admin' || Auth::user()->type == 'editor')
 									<a href="#"  class="approve-disable btn btn-success" disabled="disabled">Approve</a>

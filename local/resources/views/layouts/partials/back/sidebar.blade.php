@@ -75,6 +75,7 @@
           <ul class="treeview-menu {{ (Request::is('admin/sidebars') ? 'active' : '') }}">
             <li class="{{ (Request::is('admin/sidebars') ? 'active' : '') }}"><a href="{{url('admin/sidebars')}}"><i class="fa fa-circle-o"></i> View Items</a></li>
             <li class="{{ (Request::is('admin/sidebars/create') ? 'active' : '') }}"><a href="{{url('admin/sidebars/create')}}"><i class="fa fa-circle-o"></i> Create Item</a></li>
+            <li class="{{ (Request::is('admin/rightblocks') ? 'active' : '') }}"><a href="{{url('admin/rightblocks')}}"><i class="fa fa-circle-o"></i> View Right Blocks</a></li>
           </ul>
         </li>
         <li class="treeview {{ (Request::is('admin/footers') ? 'active' : '') }}">

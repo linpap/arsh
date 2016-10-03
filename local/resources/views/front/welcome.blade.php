@@ -1,6 +1,6 @@
 @extends('layouts.front')
 @section('css')
-<link rel="stylesheet" href="{{asset('dist/css/home-logged.css')}}">
+<link rel="stylesheet" href="{{asset('dist/css/style.css')}}">
 @endsection
 @section('title','Home')
 @section('content')
@@ -201,7 +201,7 @@
 
             <div class="col-md-10 col-sm-12 col-xs-12" style="padding:0;margin-bottom:20px">
                 <div class="tabs" style="margin-bottom:10px">
-                  <h2> সাম্প্রতিক ভিডিও</h2>
+                  <h2> সাম্প্রতিক <span>ভিডিও</span> <img style="margin:-5px 0 0 5px; " src="http://www.public-post.com/beta2/dist/icons/linez.png" /></h2>
                 </div>
                 
                 @if(count($lastest_videos) > 0)
@@ -216,7 +216,8 @@
                         $url2="";
                         $url3="";
                     ?>
-                    @foreach($lastest_videos as $video)
+                    @foreach($lastest_videos as $key => $video)
+                    @if($key == 0)
                         <?php 
                             $video1 = $video->title;
                             $url1=$video->id;
@@ -230,21 +231,65 @@
                             } 
                             
                         ?>
+                    @elseif($key == 1)
+                        <?php 
+                            $video2 = $video->title;
+                            $url2=$video->id;
+                            $user2=$video->user()->first()->name;
+                            if($video->user()->first()->profile_image && $video->user()->first()->facebook_id == null && $video->user()->first()->twitter_id == null){
+                               $image2='img/users/profile/profile_'.$video->user()->first()->profile_image;      
+                            }elseif ($video->user()->first()->facebook_id != null || $video->user()->first()->twitter_id != null) {
+                               $image2=$video->user()->first()->profile_image;
+                            } 
+                        ?>
+                    @elseif($key == 2)
+                        <?php 
+                            $video3 = $video->title;
+                            $url3=$video->id;
+                            $user3=$video->user()->first()->name;
+                            if($video->user()->first()->profile_image && $video->user()->first()->facebook_id == null && $video->user()->first()->twitter_id == null){
+                               $image3='img/users/profile/profile_'.$video->user()->first()->profile_image;      
+                            }elseif ($video->user()->first()->facebook_id != null || $video->user()->first()->twitter_id != null) {
+                               $image3=$video->user()->first()->profile_image;
+                            } 
+                        ?>
+                    @endif
                     
                     <div class="col-md-3 col-sm-3 col-xs-3 view video video3" style="margin:0px 7px;padding:0px">
                         <a href="{{url('videos/'.$video->id)}}">
                             <img src="http://img.youtube.com/vi/{{$video->video_link}}/1.jpg" alt="" class="center-block">
                         </a>
-                    <div class="descripcion desc1">
-                       <a href="{{url('videos/'.($url1) ? : $url1)}}" class="pull-left" style="margin-right:5px">
-                        <h4>{{$video->title}}</h4>                        
-                        <img src="{{$image1}}" class="img-responsive pull-left" style="margin-right:5px" width="30px" height="30px" alt="">
-                            {{$user1}}
-                        </a>
-                    </div>
                     </div>
                     
                     @endforeach
+                    @if($image1)
+                    <div class="col-md-3 col-sm-3 col-xs-3 descripcion desc1" style="margin-right:7px;padding:0px">
+                       <a href="{{url('videos/'.($url1) ? : $url1)}}" class="pull-left" style="margin-right:5px">
+                        <h4>{{($video1) ? : $video1}} #1</h4>
+                        
+                            <img src="{{$image1}}" class="img-responsive pull-left" style="margin-right:5px" width="20px" height="20px" alt="">
+                            {{$user1}}
+                        </a>
+                    </div>
+                    @endif
+                    @if($image2)
+                    <div class="col-md-3 col-sm-3 col-xs-3 descripcion desc2" style="margin:0px 7px;padding:0px">
+                        <a href="{{url('videos/'.($url2) ? : $url2)}}" class="pull-left" style="margin-right:5px">
+                        <h4>{{($video2) ? : $video2}} #2</h4>
+                        <a href="#" class="pull-left" style="margin-right:5px">
+                            <img src="{{$image2}}" class="img-responsive pull-left" style="margin-right:5px" width="20px" height="20px" alt="">{{$user2}}
+                        </a>
+                    </div>
+                    @endif
+                    @if($image3)
+                    <div class="col-md-3 col-sm-3 col-xs-3 descripcion desc3" style="margin:0px 7px;padding:0px">
+                        <a href="{{url('videos/'.($url3) ? : $url3)}}" class="pull-left" style="margin-right:5px">
+                            <h4>{{($video3) ? : $video3}} #3</h4>
+                        
+                            <img src="{{$image3}}" class="img-responsive pull-left" style="margin-right:5px" width="20px" height="20px" alt="">{{$user3}}
+                        </a>
+                    </div>
+                    @endif
                 @endif   
                 </div>
             </div>

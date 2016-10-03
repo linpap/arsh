@@ -197,6 +197,12 @@
                 });                
             }
         });
+
+        $('.deleteNormal').on('click',function(e){
+                notie.confirm('আপনি যে কাজ করতে চান আপনি কি নিশ্চিত?', 'হাঁ', 'বাতিল', function() {
+                                       
+                });  
+        });
     </script>
     
     @yield('js')

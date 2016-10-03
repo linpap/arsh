@@ -20,9 +20,12 @@
 						<th>ID <span class="pull-right fa fa-sort"></span></th>
 						<th>Title <span class="pull-right fa fa-sort"></span> </th>
 						<th>Categories <span class="pull-right fa fa-sort"></span></th>
-						<th>User <span class="pull-right fa fa-sort"></span></th>						
+						<th>User <span class="pull-right fa fa-sort"></span></th>
 						<th>Status <span class="pull-right fa fa-sort"></span></th>
 						<th>Views <span class="pull-right fa fa-sort"></span></th>
+						<th>Shares <span class="pull-right fa fa-sort"></span></th>
+						<th>Likes <span class="pull-right fa fa-sort"></span></th>
+						<th>Points <span class="pull-right fa fa-sort"></span></th>
 						<th>Action</th>
 					</thead>
 
@@ -35,6 +38,9 @@
 								<td>{{$post->user->name}}</td>
 								<td>{{$post->status}}</td>
 								<td>{{$post->views}}</td>
+								<td>{{$post->shares}}</td>
+								<td>{{$post->likes}}</td>
+								<td>{{$post->points}}</td>
 								<td>
 									@if($post->status == 'approved' && Auth::user()->type=='admin' || Auth::user()->type == 'editor')
 									<a href="#"  class="approve-disable btn btn-success" disabled="disabled">Approve</a>

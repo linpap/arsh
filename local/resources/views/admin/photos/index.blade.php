@@ -23,6 +23,9 @@
 						<th>User <span class="pull-right fa fa-sort"></span></th>
 						<th>Status <span class="pull-right fa fa-sort"></span></th>
 						<th>Views <span class="pull-right fa fa-sort"></span></th>
+						<th>Shares <span class="pull-right fa fa-sort"></span></th>
+						<th>Likes <span class="pull-right fa fa-sort"></span></th>
+						<th>Points <span class="pull-right fa fa-sort"></span></th>
 						<th>Action</th>
 					</thead>
 					<tbody>
@@ -34,6 +37,9 @@
 								<td>{{$photo->user->name}}</td>
 								<td>{{$photo->status}}</td>
 								<td>{{$photo->views}}</td>
+								<td>{{$photo->shares}}</td>
+								<td>{{$photo->likes}}</td>
+								<td>{{$photo->points}}</td>
 								<td>
 									@if($photo->status == 'approved' && Auth::user()->type=='admin' || Auth::user()->type == 'editor')
 									<a href="#" onclick="return confirm('This photos is already approved.');" class="approve-disable btn btn-success" disabled="disabled">Approve</a>

@@ -21,6 +21,9 @@ class Video extends Model
             ]
         ];
     }
+    public function notifications(){
+        $this->hasMany('App\Notification');
+    }
     public function category(){
     	
     	return $this->belongsTo('App\Category');

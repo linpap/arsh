@@ -23,6 +23,9 @@
 						<th>User <span class="pull-right fa fa-sort"></span></th>
 						<th>Status <span class="pull-right fa fa-sort"></span></th>
 						<th>Views <span class="pull-right fa fa-sort"></span></th>
+						<th>Shares <span class="pull-right fa fa-sort"></span></th>
+						<th>Likes <span class="pull-right fa fa-sort"></span></th>
+						<th>Points <span class="pull-right fa fa-sort"></span></th>
 						<th>Action</th>
 					</thead>
 					<tbody>
@@ -34,6 +37,9 @@
 								<td>{{$video->user->name}}</td>
 								<td>{{$video->status}}</td>
 								<td>{{$video->views}}</td>
+								<td>{{$video->shares}}</td>
+								<td>{{$video->likes}}</td>
+								<td>{{$video->points}}</td>
 								<td>
 									@if($video->status == 'approved' && Auth::user()->type=='admin' || Auth::user()->type == 'editor')
 									<a href="#"  class="approve-disable btn btn-success" disabled="disabled">Approve</a>

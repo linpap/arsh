@@ -51,7 +51,7 @@
                         <a href="#" style="text-decoration:none;color:black">
                             <h3>{{$ebook->title}}</h3>
                             <p class="tiempo">
-                                <i class="fa fa-archive category" data-id="{{$post->category()->first()->id}}" aria-hidden="true"></i>  
+                                <i class="fa fa-archive category" data-id="{{$ebook->category()->first()->id}}" aria-hidden="true"></i>  
                                 বিভাগ: {{$ebook->category()->first()->name}}
                                 @if(Auth::check())
                                     @if(Auth::user()->type == 'subscriber')                            
@@ -78,24 +78,24 @@
                     <div class="col-lg-12" style="height:60px;padding:0">
                         <hr style="padding:0;border:1px solid #d8d8d8;">
                     </div>
-                <div class="col-lg-10 col-md-10 col-sm-9 col-xs-12 portafolio-content">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 nopadding portafolio-content">
                     <!-- Projects Row -->
-                <div class="user col-lg-2 col-md-2 col-sm-2 col-xs-12" data-userid="(if(Auth::check()) ? 'Auth::user()->id' : '')">
+                <div class="user col-lg-2 col-md-2 col-sm-2 col-xs-12 nopadding" data-userid="(if(Auth::check()) ? 'Auth::user()->id' : '')">
                 @if($ebook->user()->first()->profile_image && $ebook->user()->first()->facebook_id == null && $ebook->user()->first()->twitter_id == null)
                     <img class="img-responsive center-block img-circle" src="{{asset('img/users/profile/profile_'.$ebook->user()->first()->profile_image)}}" alt="">
                 @elseif($ebook->user()->first()->facebook_id != null || $ebook->user()->first()->twitter_id != null )
-                 <img src="{{$ebook->user()->first()->profile_image}}" style="max-width:40px" alt="" class="img-circle" alt="The Post Page"> 
+                 <img src="{{$ebook->user()->first()->profile_image}}" style="max-width:40px" alt="" class="img-circle center-block" alt="The Post Page"> 
                 @else
                 <img src="{{asset('img/profile.png')}}" style="max-width:40px" alt="" class="img-circle" alt="The Post Page ">
                 @endif
                     <p class="text-center user-name"  data-user="{{$ebook->user()->first()->id}}">{{$ebook->user()->first()->name}}</p>
-                    <p class="user-name">Points: <span class=" userpoints"></span></p>
+                    <p class="user-name text-center">Points: <span class=" userpoints"></span></p>
                     <div class="redes col-lg-10 col-md-8 col-sm-12 col-xs-12 col-lg-offset-1 col-md-offset-2 col-sm-offset-0 col-xs-offset-0" style="padding:0">
-                            <p><a href="http://facebook.com/{{$ebook->user()->first()->facebook_real}}"><span class="icon icon-facebook"></span></a>
+                            <p class="text-center"><a href="http://facebook.com/{{$ebook->user()->first()->facebook_real}}"><span class="icon icon-facebook"></span></a>
                             <a href="http://twitter.com/{{$ebook->user()->first()->twitter_real}}"><span class="icon icon-twitter"></span></a>
                     </div>
                 </div>
-                <div class="contenido col-lg-12 col-md-10 col-sm-10 col-xs-12">
+                <div class="contenido col-lg-10 col-md-10 col-sm-10 col-xs-12">
                  {!!$ebook->content!!}      
                 
                 <div class="clearfix"></div>
@@ -162,28 +162,30 @@
                 <div class="well comentarios nopadding">
                     <h4>মতামত দিন:</h4>
                     @if(Auth::check())
-                    <div class="col-lg-21 col-md-2 col-sm-2 col-xs-2 nopadding">
-                    <a class="pull-left" href="#">
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 nopadding">
+                    <a href="#">
                     
                         @if(Auth::user()->profile_image && Auth::user()->first()->facebook_id == null && Auth::user()->first()->twitter_id == null)
                             <img style="max-width:80px" alt="fafa" class="img-circle" src="{{asset('img/users/profile/profile_'.Auth::user()->profile_image)}}" alt="The Public Post">
                         @elseif(Auth::user()->facebook_id != null || Auth::user()->first()->twitter_id != null)
-                            <img style="max-width:100px" alt="" class="img-circle" src="{{Auth::user()->profile_image}}" alt="The Public Post">
+                            <img alt="" class="img-responsive" src="{{Auth::user()->profile_image}}" alt="The Public Post">
                         @else
                             <img src="{{asset('img/profile.png')}}" style="max-width:40px" alt="" class="img-circle" alt="The Post Page ">
                         @endif  
                         </a>
                         </a>
                         </div>
+                        <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
                         <form role="form" action="{{url('comment/ebooks/'.$id.'/'.Auth::user()->id)}}" method="POST">
                             {{ csrf_field() }}
-                            <div class="form-group col-lg-10 col-md-10 col-sm-9 col-xs-9 nopadding">
+                            <div class="form-group col-xs-12 nopadding">
                                 <textarea class="form-control ta-styl" name="comment" rows="3"></textarea>
                             </div>
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 nopadding m-0">
                                 <button type="submit" class="btn btn-primary">পাঠান</button>
                             </div>
                         </form>
+                        </div>
                     @endif
                 <div class="col-md-12 col-sm-12 col-xs-12 nopadding m-t20 m-0">
                 </div>
@@ -191,28 +193,28 @@
                        
                         <form role="form" action="{{url('/comment/ebooks/'.$id)}}" method="POST">
 
-                        <div class="mensaje m-t10">
+                        <div class="mensaje m-t10 col-xs-12 nopadding">
                             <h2>যোগাযোগ</h2>
                             <textarea class="ta-styl2 form-control" name="comment"></textarea>
                         </div>
                             {{ csrf_field() }}
-                            <div class="form col-md-5 nopadding m-t20">
+                            <div class="form col-md-5 col-xs-12 nopadding m-t20">
                                 <p>Name*<br>
                                 <input type="text" name="name" class="form-control w100porcent" required>
                                 </p>
                             </div>
-                            <div class="col-md-2"></div>
-                            <div class="form col-md-5 nopadding m-t20">
+                            <div class="col-md-2 col-xs-0"></div>
+                            <div class="form col-md-5 col-xs-12 nopadding m-t20">
                                 <p>Web<br>
                                 <input type="text" name="web" class="form-control w100porcent">
                                 </p>
                             </div>
-                            <div class="form col-md-5 nopadding m-t20">
+                            <div class="form col-md-5 col-xs-12 nopadding m-t20">
                                 <p>Email*<br>
                                 <input type="email" name="email" class="form-control w100porcent" required>
                                 </p>
                             </div>
-                            <div class="form col-md-12 m-t20 nopadding">
+                            <div class="form col-xs-12 m-t20 nopadding">
                                 <p>CAPTCHA Code* - Resolve this easy math account<br>
                                 <?php 
                                 $result=0;
@@ -228,7 +230,7 @@
                                 <p class="alert-danger captcha-error">ত্রুটি আবার চেষ্টা করুন.</p>
                                 <p class="alert-success captcha-correct">নির্ভুল!</p>
                             </div>
-                            <div class="form col-md-12 m-t20 nopadding">
+                            <div class="form col-xs-12 m-t20 nopadding">
                             <button type="submit" id="submit" class="btn btn-primary m-b20">পাঠান</button>
                             </div>
                             </form>

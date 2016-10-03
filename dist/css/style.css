@@ -8,9 +8,24 @@
     font-weight: normal;
     font-style: normal;
 }
-.subcategories{
-    border-top: 1px solid white;
+
+.subcategories li {
+    min-width: 120px;
 }
+
+.subcategoriesOpened {
+    display: block!important;
+}
+
+.li-items span {
+    display: none;
+}
+
+.user-login img {
+    width: 40px;
+    height: 40px;
+}
+
 .carousel-inner .item{
     width: 100%;
     height: 280px;
@@ -33,6 +48,7 @@
 }
 .portafolio-content{
     word-break: break-all;
+    margin-top: 20px;
 }
 .myline{
     border:1px solid #eee !important;
@@ -44,6 +60,7 @@ body {
     font-family: 'Vrinda';
     font-weight: normal;
     font-style: normal;
+    margin:0;
 }
 .post{
     word-break: break-all;
@@ -440,6 +457,12 @@ nav .login {
     text-decoration: none;
     color: black
 }
+
+@media (min-width: 1200px) {
+    .sidebar {
+        float: right;
+    }
+}
 @media (max-width: 1200px) {
     .main-menu .ul {
         width: 77%
@@ -576,6 +599,13 @@ nav .login {
         margin-bottom: 10px
     }
 }
+
+@media (max-width: 1000px) {
+    .navbar-inverse {
+        height: auto!important;
+    }
+}
+
 /*/*/
 /**/
 
@@ -599,7 +629,7 @@ nav .login {
     padding: 0;
     text-align: justify
 }
-.main-menu ul:after {
+.main-menu ul.nav:after {
     content: ".";
     display: inline-block;
     height: 100%;
@@ -613,7 +643,7 @@ nav .login {
         width: 77%
     }
     div.container .navbar-nav .li-items {
-        width: 7%
+        width: auto;
     }
 }
 @media (max-width: 1000px) {
@@ -627,7 +657,7 @@ nav .login {
         width: 100%
     }
 }
-@media (max-width: 768px) {
+@media (max-width: 767px) {
     .navbar-header {
         width: auto
     }
@@ -641,8 +671,38 @@ nav .login {
         float: left;
         margin-left: 0px
     }
-}
-@media (max-width: 767px) {
+    .subcategories {
+        display: none;
+        border-top: none;
+        background-color: #0061d8;
+        position: relative;
+        width: 100%;
+    }
+
+    .subcategories li {
+        height: 60px
+    }
+
+    .subcategories li a {
+        line-height: 60px;
+        padding: 5px 10px!important;
+    }
+
+    .li-items a {
+        width: 90%;
+    }
+
+    .li-items span, .login span {
+        display: block;
+        padding: 25.5px 30px;
+        position: absolute;
+        right: 0;
+        color: white;
+        width: 10%;
+        text-align: center;
+        cursor: pointer;
+    }
+
     nav .login {
         float: left;
         margin-left: 0px
@@ -694,19 +754,22 @@ nav .login {
     }
 }
 @media (max-width: 470px) {
-    footer .items {
-        padding-right: 5%!important
-    }
     .categories,
     .first {
         width: 100%!important;
         margin: 0!important
     }
 }
+
+@media (max-width: 580px) {
+    footer .items {
+        padding-right: 5%!important;
+    }
+}
 /*/*/
 
 .contenido {
-    margin-left: 100px
+
 }
 .row {
     background-color: #fff
@@ -715,8 +778,13 @@ a {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif
 }
 .user {
-    position: absolute
+    position: relative;
 }
+
+.img-circle {
+    max-height: 100px;
+}
+
 .user a {
     text-decoration: none;
     padding-left: 5px
@@ -733,7 +801,25 @@ a {
     border: 1px solid #d8d8d8;
     border-top: 5px solid #0054a6
 }
-@media (max-width: 768px) {
+
+.fb-comments span, .fb-comments span iframe {
+   width: 100%!important; 
+}
+
+@media (min-width: 767px) {
+    .subcategories{
+    display: none;
+}
+
+.li-items:hover .subcategories {
+    display: block;
+    border-top: 1px solid white;
+    background-color: #0061d8;
+    position: absolute;
+    min-width: 100px;
+}
+}
+@media (max-width: 767px) {
     .navbar-header {
         width: auto
     }
@@ -741,11 +827,10 @@ a {
         margin: 0
     }
     .main-menu .ul {
-        width: auto
+        width: 100%;
     }
-    nav .login {
-        float: left;
-        margin-left: 0px
+    nav .login div {
+        float: left!important;
     }
     footer {
         height: 200px;
@@ -894,10 +979,6 @@ a {
     .posts p {
         font-size: 20px
     }
-    .video,
-    .descripcion {
-        width: 30%
-    }
     .video1,
     .desc1 {
         margin-left: 2%
@@ -906,6 +987,7 @@ a {
         width: 100%
     }
 }
+
 @media (max-width: 960px) {
     body {
         background-color: #fff
@@ -922,6 +1004,12 @@ footer div.footer {
     background-color: white;
     width: auto
 }
+
+footer div.space {
+    width: 100%;
+    min-height: 100px;
+}
+
 @media (max-width: 500px) {
     .video .mask a {
         font-size: 10px

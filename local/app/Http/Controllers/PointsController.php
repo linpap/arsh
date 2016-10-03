@@ -229,10 +229,10 @@ class PointsController extends Controller
     }
 
 
-    public function getUserPoints(Request $request, $userid,$from=null,$to=null){
+    public function getUserPoints($userid,$from=null,$to=null){
             $sum = 0;
             $points = 0;
-
+            $user = User::find($userid);
             if($from == null && $to == null){
                 $photos = Photo::orderBy('id','DESC')->where('user_id',$userid)->get();
                 $videos = Video::orderBy('id','DESC')->where('user_id',$userid)->get();
@@ -282,5 +282,17 @@ class PointsController extends Controller
                 return response()->json(['msg'=>$sum]);
             }                
      
+    }
+
+    public function addPoints(Request $request,$userid){
+        $points = $this->getUserPoints($userid);
+        $user=User::find($userid);
+        if($points != $user->points){
+            $user->points=$points;
+            $user->save();
+            return response()->json(['msg'=>'success']);
+        }else{
+            return;
+        }
     }
 }

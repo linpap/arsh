@@ -15,6 +15,7 @@ use App\Category;
 use App\User;
 use App\Navbar;
 use App\Footer;
+use App\Rightblock;
 use App\Sidebar;
 use App\Views;
 use App\Adv;
@@ -275,8 +276,9 @@ class VideosController extends Controller
                 }
             }
         }
-
+        $rightblock = Rightblock::where('type','video_single')->first();
         return view('front.videos.show')
+        ->with('rightblock',$rightblock)
         ->with('topHorizontalBanner',$topHorizontalBanner)
         ->with('thirdSidebarVerticalScript',$thirdSidebarVerticalScript)
         ->with('thirdSidebarVertical',$thirdSidebarVertical)
@@ -343,7 +345,9 @@ class VideosController extends Controller
         }
      
         $related_videos = Video::orderBy('id','DESC')->paginate(3);
+        $rightblock = Rightblock::where('type','video_single')->first();
         return view('front.videos.index')
+        ->with('rightblock',$rightblock)
         ->with('related_videos',$related_videos)
         ->with('topHorizontalBanner',$topHorizontalBanner)
         ->with('firstSidebarRight',$firstSidebarRight)

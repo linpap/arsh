@@ -17,6 +17,7 @@ use App\Navbar;
 use App\Footer;
 use App\Adv;
 use App\Sidebar;
+use App\Rightblock;
 use Auth;
 use Config;
 
@@ -169,7 +170,9 @@ class CategoriesController extends Controller
         }
         
 
-        return view('front.categories.show')        
+        $rightblock = Rightblock::where('type','category')->first();
+        return view('front.categories.show')
+        ->with('rightblock',$rightblock)
         ->with('topHorizontalBanner',$topHorizontalBanner)
         ->with('firstSidebarRight',$firstSidebarRight)
         ->with('secondSidebarRight',$secondSidebarRight)

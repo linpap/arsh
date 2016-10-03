@@ -7,6 +7,10 @@
         <div class="row">
             <div class="col-lg-3 col-md-6">
             	{!! Form::open(['route' => 'admin.sidebars.store','method' => 'POST']) !!}
+                    <div class="form-group">
+                        {!! Form::label('notification','Notification') !!}
+                        {!! Form::text('notification', null,['class'=> 'form-control','placeholder'=>'Type here']) !!}
+                    </div>
             	
                     <div class="form-group">
                         {!! Form::label('category_id','Category') !!}

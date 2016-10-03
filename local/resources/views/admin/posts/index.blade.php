@@ -23,6 +23,9 @@
 						<th>User <span class="pull-right fa fa-sort"></span></th>
 						<th>Status <span class="pull-right fa fa-sort"></span></th>
 						<th>Views <span class="pull-right fa fa-sort"></span></th>
+						<th>Shares <span class="pull-right fa fa-sort"></span></th>
+						<th>Likes <span class="pull-right fa fa-sort"></span></th>
+						<th>Points <span class="pull-right fa fa-sort"></span></th>
 						<th>Action</th>
 					</thead>
 
@@ -34,25 +37,28 @@
 								<td>{{$post->category->name}}</td>
 								<td>{{$post->user->name}}</td>
 								<td>{{$post->status}}</td>
-								<td>{{$post->views()->count()}} </td>
-								<td>
-									@if($post->status == 'approved' && Auth::user()->type=='admin' || Auth::user()->type == 'editor')
-									<a href="#"  class="approve-disable btn btn-success" disabled="disabled">Approve</a>
-									@elseif(Auth::user()->type == 'admin' || Auth::user()->type == 'editor')
-									<a href="{{route('admin.posts.approve',$post->id)}}"  class="approve btn btn-success">Approve</a>
-									@endif
-									@if($post->status == 'suspended' && Auth::user()->type=='admin' || Auth::user()->type == 'editor')
-									<a href="{{route('admin.posts.suspend',$post->id)}}"  disabled="disabled" class="suspend-disable btn btn-primary">Suspend</a>
-									@elseif(Auth::user()->type == 'admin' || Auth::user()->type == 'editor')
-									@if(Auth::user()->type != 'subscriptor')					
-									<a href="{{route('admin.posts.suspend',$post->id)}}" class="suspend btn btn-primary">Suspend</a>
-									@endif
-									@endif
-									<a href="{{route('admin.posts.edit',$post->id)}}" class="edit btn btn-warning">Edit</a>
-									@if(Auth::user()->type == 'admin')
-								    <a href="{{route('admin.posts.destroy',$post->id)}}"  class="delete btn btn-danger">Delete</a>
-								    @endif 
-								</td>
+								<td>{{$post->views}}</td>
+								<td>{{$post->shares}}</td>
+								<td>{{$post->likes}}</td>
+								<td>{{$post->points}}</td>
+									<td>
+										@if($post->status == 'approved' && Auth::user()->type=='admin' || Auth::user()->type == 'editor')
+										<a href="#"  class="approve-disable btn btn-success" disabled="disabled">Approve</a>
+										@elseif(Auth::user()->type == 'admin' || Auth::user()->type == 'editor')
+										<a href="{{route('admin.posts.approve',$post->id)}}"  class="approve btn btn-success">Approve</a>
+										@endif
+										@if($post->status == 'suspended' && Auth::user()->type=='admin' || Auth::user()->type == 'editor')
+										<a href="{{route('admin.posts.suspend',$post->id)}}"  disabled="disabled" class="suspend-disable btn btn-primary">Suspend</a>
+										@elseif(Auth::user()->type == 'admin' || Auth::user()->type == 'editor')
+										@if(Auth::user()->type != 'subscriptor')					
+										<a href="{{route('admin.posts.suspend',$post->id)}}" class="suspend btn btn-primary">Suspend</a>
+										@endif
+										@endif
+										<a href="{{route('admin.posts.edit',$post->id)}}" class="edit btn btn-warning">Edit</a>
+										@if(Auth::user()->type == 'admin')
+									    <a href="{{route('admin.posts.destroy',$post->id)}}"  class="delete btn btn-danger">Delete</a>
+									    @endif 
+									</td>
 						@endforeach
 					</tbody>
 				</table>

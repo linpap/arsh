@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Subcategory;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -18,8 +17,10 @@ use App\Comment;
 use App\Navbar;
 use App\Footer;
 use App\Sidebar;
+use App\Rightblock;
 use App\Views;
 use App\Adv;
+use App\Subcategory;
 use Auth;
 use Config;
 class PostsController extends Controller
@@ -292,8 +293,10 @@ class PostsController extends Controller
                 }
             }
         }
-
+        
+        $rightblock = Rightblock::where('type','post_single')->first();
         return view('front.posts.show')
+        ->with('rightblock',$rightblock)
         ->with('topHorizontalBanner',$topHorizontalBanner)
         ->with('firstSidebarRight',$firstSidebarRight)
         ->with('secondSidebarRight',$secondSidebarRight)

@@ -32,6 +32,12 @@ class UsersController extends Controller
      * @return \Illuminate\Http\Response
      */
    
+    public function getBestUser(){
+        $user = User::orderBy('points','DESC')->first();
+
+        dd($user);
+        return $user;
+    }
     public function index()
     {
         $users = User::orderBy('id','ASC')->paginate(4);

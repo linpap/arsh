@@ -22,6 +22,12 @@ Route::group(['prefix' => 'admin','middleware'=>'auth'], function () {
 	//Verify Email//
 	Route::get('/verifyemail', 'HomeController@index');
 
+	//Notifications Routes//
+	Route::resource('notifications', 'NotificationsController');
+		Route::delete('/notifications/{id}',[
+			'uses' => 'NotificationsController@destroy',
+			'as' => 'admin.notifications.destroy',
+		]);
 	//Images Routes//
 	Route::resource('images', 'ImagesController');
 		Route::delete('/images/destroyImage/{type}/{id}',[
@@ -45,6 +51,16 @@ Route::group(['prefix' => 'admin','middleware'=>'auth'], function () {
 		Route::get('sidebars/{id}/destroy',[
 			'uses' => 'SidebarController@destroy',
 			'as'   => 'admin.sidebars.destroy',
+		]);
+		Route::post('sidebars/addnotification',[
+			'uses' => 'SidebarController@addNotification',
+			'as'   => 'admin.sidebars.addnotification',
+		]);
+	//RightBlocks Routes//
+	Route::resource('rightblocks', 'RightblocksController');
+		Route::get('/rightblocks/{id}/destroy',[
+			'uses' => 'RightblocksController@destroy',
+			'as' => 'admin.rightblocks.destroy',
 		]);
 	//Footer routes //
 	Route::resource('footers', 'FooterController');	
@@ -213,6 +229,10 @@ Route::group(['prefix' => 'admin','middleware'=>'auth'], function () {
 		'uses' => 'PointsController@getUserPoints',
 		'as'   => 'front.points.getUserPoints',
 	]);
+	Route::post('/points/addpoints/{userid}',[
+		'uses' => 'PointsController@addPoints',
+		'as'   => 'front.points.getUserPoints',
+	]);
 
 	Route::get('/points/getfacebookstats/{url}',[
 		'uses'=> 'PointsController@getFacebooks',
@@ -280,7 +300,6 @@ Route::group(['prefix' => 'admin','middleware'=>'auth'], function () {
 	'uses' => 'EbooksController@showAll',
 	'as'   => 'front.ebooks.index',
 	]);
-
 	Route::get('/ebooks/{id}/{share?}',[
 	'uses' => 'EbooksController@show',
 	'as'   => 'front.ebooks.show',
@@ -305,6 +324,12 @@ Route::group(['prefix' => 'admin','middleware'=>'auth'], function () {
 		'as'   => 'front.newsletters.isSubscriber',
 	]);
 	//End Newsletters
+
+	//Front User
+	Route::get('/users/best',[
+		'uses' => 'UsersController@getBestUser',
+		'as'   => 'front.newsletters.isSubscriber',
+	]);
 	Route::get('posts', [ 'as' => 'posts', 'uses' => 'FrontPageController@posts' ]);
 	//Login and Register
 	Route::auth();

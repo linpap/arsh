@@ -18,6 +18,7 @@ use App\User;
 use App\Navbar;
 use App\Footer;
 use App\Sidebar;
+use App\Rightblock;
 use App\Adv;
 use Auth;
 use Config;
@@ -233,9 +234,6 @@ class PhotosController extends Controller
 
         $advs = Adv::orderBy('position','DESC')->where('section','photo_single')->get();
 
-        $post = Post::where('id',$id)->first();
-        $post->views();
-        $post->tags()->get();
 
         $topHorizontalBanner="";
         $firstSidebarRight="";
@@ -277,8 +275,9 @@ class PhotosController extends Controller
                 }
             }
         }
-
+        $rightblock = Rightblock::where('type','photo_single')->first();
         return view('front.photos.show')
+        ->with('rightblock',$rightblock)
         ->with('topHorizontalBanner',$topHorizontalBanner)
         ->with('thirdSidebarVertical',$thirdSidebarVertical)
         ->with('thirdSidebarVerticalScript',$thirdSidebarVerticalScript)
@@ -294,7 +293,6 @@ class PhotosController extends Controller
         ->with('categories',$categories)
         ->with('comments',$comments)
         ->with('photo',$photo)
-        ->with('post',$post)
         ->with('navbars',$navbars)
         ->with('footers',$footers);
     }
@@ -353,7 +351,9 @@ class PhotosController extends Controller
                 }
             }
         }
-        return view('front.photos.index')
+        $rightblock = Rightblock::where('type','photo')->first();
+        return view('front.photos.show')
+        ->with('rightblock',$rightblock)
         ->with('topHorizontalBanner',$topHorizontalBanner)
         ->with('firstSidebarRight',$firstSidebarRight)
         ->with('secondSidebarRight',$secondSidebarRight)

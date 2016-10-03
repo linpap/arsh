@@ -16,6 +16,7 @@ class CreateSidebarsTable extends Migration
             $table->increments('id');
             $table->integer('category_id')->unsigned();
             $table->integer('position');
+            $table->string('notification');
             $table->enum('status',['enable','disable'])->default('disable');
 
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');;
