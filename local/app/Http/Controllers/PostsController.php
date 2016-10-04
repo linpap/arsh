@@ -42,7 +42,7 @@ class PostsController extends Controller
         }
     }
     public function getUserPosts($id){
-        $posts =  Post::orderBy('id','DESC')->where('user_id',$id)->paginate(5);
+        $posts =  Post::orderBy('id','DESC')->where('user_id',$id)->paginate(20);
         $posts->each(function($posts){
             $posts->category;
             $posts->images;
@@ -85,7 +85,7 @@ class PostsController extends Controller
     public function index(Request $request)
     {
         if(Auth::user()->type != 'subscriber'){
-            $posts= Post::Search($request->title)->orderBy('id','DESC')->where('user_id',Auth::user()->id)->paginate(5);
+            $posts= Post::Search($request->title)->orderBy('id','DESC')->where('user_id',Auth::user()->id)->paginate(20);
             $posts->each(function($posts){
                 $posts->category;
                 $posts->images;
@@ -102,7 +102,7 @@ class PostsController extends Controller
     public function all(Request $request)
     {
         if(Auth::user()->type != 'subscriber'){
-            $posts= Post::Search($request->title)->orderBy('id','DESC')->paginate(5);
+            $posts= Post::Search($request->title)->orderBy('id','DESC')->paginate(20);
             $posts->each(function($posts){
                 $posts->category;
                 $posts->images;
@@ -126,14 +126,12 @@ class PostsController extends Controller
     {
         if(Auth::user()->type != 'subscriber'){
                 $categories = Category::orderBy('name','ASC')->where('type','post')->lists('name','id');
-                $sub_categories = Subcategory::orderBy('name','ASC')->get();
-                $tags =Tag::orderBy('name','ASC')->lists('name','id');
+                $subcategories = Subcategory::orderBy('name','ASC')->lists('name','id');
                 $posts = Post::orderBy('id','DESC')->paginate(4);
                 return view('admin.posts.create')
                 ->with('posts',$posts)
-                ->with('categories',$categories)
-                ->with('subcategories',$sub_categories)
-                ->with('tags',$tags);
+                ->with('subcategories',$subcategories)
+                ->with('categories',$categories);
         }else{
             Flash::error("You don't have permissions");
             return redirect()->route('admin.home');
@@ -184,7 +182,14 @@ class PostsController extends Controller
                             
                             return redirect()->back()->withErrors($validator)->withInput();
                         }else{
-                        //if pass all the validations we add the post and the images                        
+                        //if pass all the validations we add the post and the images 
+                            
+                            $tags = explode(',', $request->tags);
+                            if(count($tags) > 5){
+                                Flash::error('Maximun 5 tags per post. Please delete some tag.');
+                            return redirect()->back()->withInput();
+
+                            }
                             $post = new Post($request->except('images','category_id','tags'));
                             $post->user_id = \Auth::user()->id;
                            //associate category with post
@@ -192,13 +197,28 @@ class PostsController extends Controller
                             $post->category()->associate($category);
                             $post->sub_title=$request['subtitle'];
                             $post->subcategory_id=$request['subcategory_id'];
-                            $post->featured_b=$request['featured_b'];
+                            if($request->featured){
+                                $post->featured = 'true';
+                            }else{
+                                $post->featured = 'false';
+                            }
+                            if($request->featured_b){
+                                $post->featured_b= 'true';
+                            }else{
+                                $post->featured_b = 'false';
+                            }
+             
                             $post->photo_credit=$request['photo_credit'];
                             $post->caption=$request['caption'];
                             $post->save();
                             //associate all tags for the post
-                            $post->tags()->sync($request->tags);
-                           
+                            foreach($tags as $tag){
+                                //create new tags exploding the commas.
+                                $newtag =\DB::table('post_tag')->insert([
+                                    ['post_id' =>$post->id,'tag_text' => $tag]
+                                ]);                                
+                            }
+
                             $destinationPath = 'img/posts/';
                             $image->resize(null,450, function ($constraint) {
                                 $constraint->aspectRatio();
@@ -238,9 +258,8 @@ class PostsController extends Controller
         $sidebars = Sidebar::orderBy('position','ASC')->get();
         $footers = Footer::orderBy('position','ASC')->get();
         $post = Post::where('id',$id)->first();
-        $post->views();
-        $post->tags()->get();
         $comments = $post->comments()->orderBy('id','DESC')->get();
+        $myTags = \DB::table('post_tag')->where('post_id',$id)->lists('tag_text');
    
         $comments->each(function($comments){
 
@@ -279,11 +298,11 @@ class PostsController extends Controller
                 }else{
                     $firstSidebarRightScript = $adv->script;
                 }
-            }elseif($adv->position == '2'){
+            }elseif($adv->position == '3'){
                 if($adv->image != ''){
-                    $secondSidebarRight = $adv->image;                    
+                    $thirdSidebarVertical = $adv->image;                    
                 }else{
-                    $secondSidebarRightScript = $adv->script;
+                    $thirdSidebarVerticalScript = $adv->script;
                 }
             }elseif($adv->position == '5'){
                 if($adv->image != ''){
@@ -297,6 +316,7 @@ class PostsController extends Controller
         $rightblock = Rightblock::where('type','post_single')->first();
         return view('front.posts.show')
         ->with('rightblock',$rightblock)
+        ->with('myTags',$myTags)
         ->with('topHorizontalBanner',$topHorizontalBanner)
         ->with('firstSidebarRight',$firstSidebarRight)
         ->with('secondSidebarRight',$secondSidebarRight)
@@ -334,8 +354,11 @@ class PostsController extends Controller
             $post->images->each(function($post){
                 $post->images;
             });
-            $myTags = $post->tags->lists('id')->ToArray(); //give me a array with only the tags id.
-            return View('admin.posts.edit')->with('post',$post)->with('categories',$categories)->with('tags',$tags)->with('myTags',$myTags);            
+            $category = Category::where('id',$post->category_id)->lists('name','id');
+            $subcategory = Subcategory::where('category_id',$post->category_id)->lists('name','id');
+            $myTags = \DB::table('post_tag')->where('post_id',$id)->lists('tag_text');
+            $myTags = implode(',',$myTags);
+            return View('admin.posts.edit')->with('post',$post)->with('categories',$categories)->with('myTags',$myTags)->with('subcategory',$subcategory)->with('category',$category);            
         }else{
             Flash:error("You don't have permissions to do that.");
             return redirect()->route('admin.home');
@@ -352,18 +375,44 @@ class PostsController extends Controller
      */
     public function update(PostRequest $request, $id)
     {
-        if(Auth::user()->type != 'subscriber'){
+        if(Auth::user()->type != 'subscriber'){           
+            $tags = explode(',', $request->tags);
+            if(count($tags) > 5){
+                Flash::error('Maximun 5 tags per post. Please delete some tag.');
+            return redirect()->back()->withInput();
+                
+            }
             $post =Post::find($id);
+            $category = Category::where('id',$post->category_id)->lists('name','id');
+            $post->category()->associate($category);
+            $post->sub_title=$request['subtitle'];
+            $post->subcategory_id=$request['subcategory_id'];
+            $post->photo_credit=$request['photo_credit'];
+            $post->caption=$request['caption'];
             if($request->featured){
                 $post->featured = 'true';
             }else{
                 $post->featured = 'false';
             }
+            if($request->featured_b){
+                $post->featured_b= 'true';
+            }else{
+                $post->featured_b = 'false';
+            }
             $post->fill($request->all());
             $post->user_id = \Auth::user()->id;
             
             $post->save();
-            $post->tags()->sync($request->tags);
+            //avoid tag duplication....
+            $delete = \DB::table('post_tag')->where('post_id',$id)->delete();        
+            //associate all tags for the post
+            foreach($tags as $tag){
+            //add new tags if exists...too.
+            $newtag =\DB::table('post_tag')->insert([
+                ['post_id' =>$post->id,'tag_text' => $tag]
+            ]);                                
+            }
+
             $picture = '';
 
             //Process Form Images

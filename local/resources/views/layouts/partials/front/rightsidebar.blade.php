@@ -135,17 +135,21 @@
 
                 </div>
 
-                
+                          
+            <?php  
 
-            @if($secondSidebarRight != '')            
-
-            <img src="{{asset('img/advs/adv_'.$secondSidebarRight)}}" style="padding-bottom:50px" class="img-responsive center-block">
-
-            @else
-
-                {{$secondSidebarRightScript}}
-
-            @endif   
+                $ebook = App\Ebook::orderBy(\DB::raw('RAND()'))->where('status','approved')->take(1)->get();
+                   
+            ?>
+    
+                    @if($ebook->first()->filename != '')
+                    <div>
+                    <h2><a href="{{url('ebooks/'.$ebook->first()->id)}}">{{$ebook->first()->title}}</a></h2>
+                    <object data="{{asset('ebooks/ebook_'.$ebook->first()->filename)}}" type="application/pdf" width="100%" height="250">
+                    alt : <a href="{{asset('ebooks/ebook_'.$ebook->first()->filename)}}">{{$ebook->first()->title}}</a>
+                    </object>
+                    </div>
+                    @endif
 
 
 

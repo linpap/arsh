@@ -28,7 +28,7 @@ class EbookRequest extends Request
             'category_id' => 'required',
             'tags' => 'required',
             'content' => 'required|min:250',
-            'images'  => "required|mimes:pdf|max:10000",
+            'ebooks*'  => "required|mimes:pdf|max:10000",
         ];
         return $rules;
     }

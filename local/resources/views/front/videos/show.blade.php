@@ -60,16 +60,7 @@
                                     @endif
                                 @endif
                             </p>
-                        </a>
-                        <a href="#" class="pull-left" style="margin-right:5px">
-                        @if($video->user()->first()->profile_image && $video->user()->first()->facebook_id == null && $video->user()->first()->twitter_id == null)
-                            <img class="img-responsive center-block img-circle" style="max-width:30px" src="{{asset('img/users/profile/profile_'.$video->user()->first()->profile_image)}}" alt="">
-                        @elseif($video->user()->first()->facebook_id != null || $video->user()->first()->twitter_id != null )
-                         <img src="{{$video->user()->first()->profile_image}}" style="max-width:30px" alt="" class="img-circle" alt="The Post Page"> 
-                        @else
-                        <img src="{{asset('img/profile.png')}}" style="max-width:40px" alt="" class="img-circle" alt="The Post Page ">
-                        @endif
-                        </a>{{$video->user()->first()->name}} <span class="glyphicon glyphicon-time" style="margin-left:10px;margin-right:10px"> {{$video->created_at}}</span><span class="icon icon-eye"> {{$video->views()->count()}} ভিএওস</span><br><br>
+                        </a>  <span class="glyphicon glyphicon-time" ></span> {{$video->created_at}} <span class="icon icon-eye"> {{$video->views()->count()}} ভিএওস</span><br><br>
                         <a class="btn btn-primary" target="_blank" href="https://www.youtube.com/watch?v={{$video->video_link}}">ডাউনলোড <span class="glyphicon glyphicon-chevron-right"></span></a>
                     </div>
                     <div class="ad-bottom col-lg-12">
@@ -99,9 +90,9 @@
                  {!!$video->content!!}      
                 
                 <div class="clearfix"></div>
-                @foreach($video->tags()->get() as $tag)
-
-                <span class="icon icon-price-tag pull-left">{!!$tag->name!!}</span> 
+                <span class="icon icon-price-tag pull-left"></span>   ট্যাগ : 
+                @foreach($myTags as $tag)
+                  {{$tag}}
                 @endforeach
                 <hr>
                 <!-- Social media plugin -->

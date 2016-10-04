@@ -176,6 +176,10 @@ Route::group(['prefix' => 'admin','middleware'=>'auth'], function () {
 			'uses' => 'SubcategoriesController@destroy',
 			'as'   => 'admin.subcategories.destroy',
 		]);
+		Route::get('subcategories/getfromcategory/{id}',[
+			'uses' => 'SubcategoriesController@getFromCategory',
+			'as'   => 'admin.subcategories.getfromcategory',
+		]);
 	//Tag Routes //
 	Route::resource('tags', 'TagsController');
 		Route::get('tags/{id}/destroy',[

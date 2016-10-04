@@ -114,18 +114,6 @@
             <li class="{{ (Request::is('admin/subcategories/create') ? 'active' : '') }}"><a href="{{url('admin/subcategories/create')}}"><i class="fa fa-circle-o"></i> Create SubCategory</a></li>
           </ul>
         </li>
-        <li class="treeview {{ (Request::is('admin/tags') ? 'active' : '') }}">
-          <a href="#">
-            <i class="fa fa-dashboard"></i> <span>Tags</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li class="{{ (Request::is('admin/tags') ? 'active' : '') }}"><a href="{{url('admin/tags')}}"><i class="fa fa-circle-o"></i> View Tags</a></li>
-            <li class="{{ (Request::is('admin/tags/create') ? 'active' : '') }}"><a href="{{url('admin/tags/create')}}"><i class="fa fa-circle-o"></i> Create Tag</a></li>
-          </ul>
-        </li>
         @endif
         @if(Auth::user()->type != 'subscriber')<!-- If not a subscriber show my the options -->
           <li class="treeview {{ (Request::is('admin/posts') ? 'active' : '') }}{{ (Request::is('admin/posts/create') ? 'active' : '') }}{{ (Request::is('admin/posts/all') ? 'active' : '') }}">

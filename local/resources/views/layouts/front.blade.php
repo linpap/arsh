@@ -116,7 +116,7 @@
 
   js = d.createElement(s); js.id = id;
 
-  js.src = "//connect.facebook.net/es_LA/sdk.js#xfbml=1&version=v2.7&appId=167806036983988";
+  js.src = "//connect.facebook.net/en/sdk.js#xfbml=1&version=v2.7&appId=167806036983988";
 
   fjs.parentNode.insertBefore(js, fjs);
 

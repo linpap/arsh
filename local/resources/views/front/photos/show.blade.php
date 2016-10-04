@@ -55,17 +55,8 @@
                                     @endif
                                 @endif
                             </p>
-
-                        </a>
-                        <a href="#" class="pull-left" style="margin-right:5px">
-                        @if($photo->user()->first()->profile_image && $photo->user()->first()->facebook_id == null && $photo->user()->first()->twitter_id == null)
-                            <img class="img-responsive center-block img-circle" style="max-width:30px" src="{{asset('img/users/profile/profile_'.$photo->user()->first()->profile_image)}}" alt="">
-                        @elseif($photo->user()->first()->facebook_id != null || $photo->user()->first()->twitter_id != null )
-                         <img src="{{$photo->user()->first()->profile_image}}" style="max-width:30px" alt="" class="img-circle" alt="The Post Page"> 
-                        @else
-                        <img src="{{asset('img/profile.png')}}" style="max-width:40px" alt="" class="img-circle" alt="The Post Page ">
-                        @endif
-                        </a>{{$photo->user()->first()->name}} <span class="fa fa-clock-o"> {{$photo->created_at}}</span><span class="icon icon-eye"> {{$photo->views()->count()}} মতামত</span><br><br>
+                            <i class="fa fa-clock-o" aria-hidden="true"></i> 
+ {{$photo->created_at}} <span class="icon icon-eye"> {{$photo->views()->count()}} মতামত</span><br><br>
                         <a class="btn btn-primary" href="/{{$photo->photo_link}}">ডাউনলোড <span class="glyphicon glyphicon-chevron-right"></span></a>
                     </div>
                     <div class="ad-bottom col-lg-12">
@@ -95,9 +86,9 @@
                  {!!$photo->content!!}      
                 
                 <div class="clearfix"></div>
-                @foreach($photo->tags()->get() as $tag)
-
-                <span class="icon icon-price-tag pull-left">{!!$tag->name!!}</span> 
+                <span class="icon icon-price-tag pull-left"></span>   ট্যাগ : 
+                @foreach($myTags as $tag)
+                  {{$tag}}
                 @endforeach
                 <hr>
                 <!-- Social media plugin -->

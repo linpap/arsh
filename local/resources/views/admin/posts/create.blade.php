@@ -29,14 +29,13 @@
 
                     <div class="form-group">
                         {!! Form::label('category_id','Category') !!}
-                        {!! Form::select('category_id', $categories,null,['class'=> 'form-control select-category','required']) !!}
+                        {!! Form::select('category_id', $categories,null,['class'=> 'form-control select-category categories','required']) !!}
                     </div>
-
                     <div class="form-group">
                         {!! Form::label('subcategory_id','Sub-Category') !!}
-                        {!! Form::select('subcategory_id', array(),null,['class'=> 'form-control','required']) !!}
+                        {!! Form::select('subcategory_id', array(),null,['class'=> 'form-control subcategories']) !!}
                     </div>
-
+                    
                     <div class="form-group">
                         {!! Form::label('content','Content') !!}
                         {!! Form::textarea('content', null,['class' => 'textarea-content form-control','required']) !!}
@@ -70,17 +69,14 @@
                     
                     <div class="form-group">
                         {!! Form::label('tags','Tags') !!}
-                        {!! Form::select('tags[]', $tags,null,['class'=> 'form-control select-tag','multiple']) !!}
+                        {!! Form::text('tags',null,['class'=> 'form-control select-tag']) !!}
                     </div>
 
                     <div class="form-group">
                         {!! Form::label('images','Images') !!}
 
                         {!! Form::file('images[]', array('multiple'=>true)) !!}
-                        {{--<div class="alert alert-warning">--}}
-                            {{--<p>* Images must be 450px tall.</p>--}}
-                        {{--</div>--}}
-                    </div>
+                    </div>  
 
             		<div class="form-group">
             			{!! Form::submit('Add Post',['class'=>'btn btn-primary']) !!}
@@ -104,21 +100,43 @@
             
         });
 
-        $(".select-tag").chosen({
-            placeholder_text_multiple: "Select your tags",
-        });
-
 
         $(".select-category").chosen({
             placeholder_text_single: "Select a category"
+        });    
+            //initalize subcategories from category.
+        $.ajax({
+                
+                url: '{{ url('admin/subcategories/getfromcategory') }}' + '/' + $('.categories').val(),
+                type: 'GET',
+                success: function(data)   {
+                    $.each( data['data'], function( index, value ){                       
+                    $('.subcategories').append('<option value="'+value['id']+'">'+value['name']+'</option>');
+                    });
+                }
         });
 
-        $('#category_id').change(function () {
-            sunCategory($(this).val());
-        });
+         $('.categories').on('change',function(){
+            console.log('CATEGORY ID ' + this.value);
+            $('.subcategories').html('');
+            var catid = this.value;
+            //search subcategories from category.
+            $.ajax({
+                
+                url: '{{ url('admin/subcategories/getfromcategory') }}' + '/' + catid,
+                type: 'GET',
+                success: function(data)   {
+                    $.each( data['data'], function( index, value ){
+                        console.log(value['id']);
+                    $('.subcategories').append('<option value="'+value['id']+'">'+value['name']+'</option>');
+                    });
+                }
+            });
+         });
 
 
-        var category_array=JSON.parse('<?php echo $subcategories; ?>');
+        /*
+        var category_array=JSON.parse('<?php //echo $subcategories; ?>');
 
         sunCategory("");
 
@@ -136,7 +154,8 @@
                     $('#subcategory_id').append('<option value="'+category_array[i].id+'">'+category_array[i].name+'</option>');
                 }
             }
-        }
+        }*/
+
         
     </script>
 @endsection

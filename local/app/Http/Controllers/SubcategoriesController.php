@@ -30,6 +30,11 @@ class SubcategoriesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function getFromCategory($id)
+    {
+        $subcategories = Subcategory::where('category_id',$id)->get();
+        return response()->json(['data'=>$subcategories]);
+    }
     public function index()
     {
         if(Auth::user()->type == 'admin'){

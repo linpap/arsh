@@ -21,7 +21,7 @@ class CreateTagsTable extends Migration
         Schema::create('post_tag',function(Blueprint $table){
             $table->increments('id');
             $table->integer('post_id')->unsigned();
-            $table->integer('tag_id')->unsigned();
+            $table->integer('tag_id')->unsigned()->nullable();
 
             $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
             $table->foreign('tag_id')->references('id')->on('tags')->onDelete('cascade');
@@ -31,7 +31,7 @@ class CreateTagsTable extends Migration
         Schema::create('ebook_tag',function(Blueprint $table){
             $table->increments('id');
             $table->integer('ebook_id')->unsigned();
-            $table->integer('tag_id')->unsigned();
+            $table->integer('tag_id')->unsigned()->nullable();
 
             $table->foreign('ebook_id')->references('id')->on('ebooks')->onDelete('cascade');
             $table->foreign('tag_id')->references('id')->on('tags')->onDelete('cascade');
@@ -41,7 +41,7 @@ class CreateTagsTable extends Migration
         Schema::create('photo_tag',function(Blueprint $table){
             $table->increments('id');
             $table->integer('photo_id')->unsigned();
-            $table->integer('tag_id')->unsigned();
+            $table->integer('tag_id')->unsigned()->nullable();
 
             $table->foreign('photo_id')->references('id')->on('photos')->onDelete('cascade');
             $table->foreign('tag_id')->references('id')->on('tags')->onDelete('cascade');
@@ -51,7 +51,7 @@ class CreateTagsTable extends Migration
         Schema::create('tag_video',function(Blueprint $table){
             $table->increments('id');
             $table->integer('video_id')->unsigned();
-            $table->integer('tag_id')->unsigned();
+            $table->integer('tag_id')->unsigned()->nullable();
 
             $table->foreign('video_id')->references('id')->on('videos')->onDelete('cascade');
             $table->foreign('tag_id')->references('id')->on('tags')->onDelete('cascade');

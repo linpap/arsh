@@ -25,12 +25,11 @@
 
                     <div class="form-group">
                         {!! Form::label('category_id','Category') !!}
-                        {!! Form::select('category_id', $categories,$photo->category->id,['class'=> 'form-control select-category','required']) !!}
+                        {!! Form::select('category_id', $categories,$photo->category->id,['class'=> 'form-control select-category categories','required']) !!}
                     </div>
-
                     <div class="form-group">
-                        {!! Form::label('photo_link','Photo Link') !!}
-                        {!! Form::text('photo_link', $photo->photo_link,['class'=> 'form-control','placeholder'=>'Type photo download url','required']) !!}
+                        {!! Form::label('subcategory_id','Sub-Category') !!}
+                        {!! Form::select('subcategory_id', $subcategory,null,['class'=> 'form-control subcategories']) !!}
                     </div>
 
                     <div class="form-group">
@@ -47,9 +46,10 @@
                         @endif      
                     </div>
                     @endif
+                    
                     <div class="form-group">
                         {!! Form::label('tags','Tags') !!}
-                        {!! Form::select('tags[]', $tags,$myTags,['class'=> 'form-control select-tag','multiple','required']) !!}
+                        {!! Form::text('tags',$myTags,['class'=> 'form-control select-tag']) !!}
                     </div>
                     
                     <div class="form-group">
@@ -98,11 +98,37 @@
         $('.textarea-content').trumbowyg({
             
         });
-        $(".select-tag").chosen({
-            placeholder_text_multiple: "Select your tags"
-        });
         $(".select-category").chosen({
             placeholder_text_single: "Select a category"
+        });    
+            //initalize subcategories from category.
+        $.ajax({
+                
+                url: '{{ url('admin/subcategories/getfromcategory') }}' + '/' + $('.categories').val(),
+                type: 'GET',
+                success: function(data)   {
+                    $.each( data['data'], function( index, value ){                       
+                    $('.subcategories').append('<option value="'+value['id']+'">'+value['name']+'</option>');
+                    });
+                }
         });
+
+         $('.categories').on('change',function(){
+            console.log('CATEGORY ID ' + this.value);
+            $('.subcategories').html('');
+            var catid = this.value;
+            //search subcategories from category.
+            $.ajax({
+                
+                url: '{{ url('admin/subcategories/getfromcategory') }}' + '/' + catid,
+                type: 'GET',
+                success: function(data)   {
+                    $.each( data['data'], function( index, value ){
+                        console.log(value['id']);
+                    $('.subcategories').append('<option value="'+value['id']+'">'+value['name']+'</option>');
+                    });
+                }
+            });
+         });
     </script>
 @endsection

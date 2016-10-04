@@ -26,7 +26,11 @@
 
                     <div class="form-group">
                         {!! Form::label('category_id','Category') !!}
-                        {!! Form::select('category_id', $categories,$video->category->id,['class'=> 'form-control select-category','required']) !!}
+                        {!! Form::select('category_id', $categories,$video->category->id,['class'=> 'form-control select-category categories','required']) !!}
+                    </div>
+                    <div class="form-group">
+                        {!! Form::label('subcategory_id','Sub-Category') !!}
+                        {!! Form::select('subcategory_id', $subcategory,null,['class'=> 'form-control subcategories']) !!}
                     </div>
 
                     <div class="form-group">
@@ -35,14 +39,18 @@
                     </div>
                     @if(Auth::user()->type == 'admin' || Auth::user()->type == 'editor')
                     <div class="form-group">
-                        {!! Form::label('featured','Mark as Featured') !!}                        
-                        {{ Form::checkbox('featured', 'true') }}                         
+                        {!! Form::label('featured','Mark as Featured') !!}
+                        @if($video->featured == 'true')
+                        {{ Form::checkbox('featured', 'true',true) }}
+                        @else
+                        {{ Form::checkbox('featured', 'true',false) }}
+                        @endif                          
                     </div>
                     @endif
-
+                    
                     <div class="form-group">
                         {!! Form::label('tags','Tags') !!}
-                        {!! Form::select('tags[]', $tags,$myTags,['class'=> 'form-control select-tag chosen-select','multiple']) !!}
+                        {!! Form::text('tags',$myTags,['class'=> 'form-control select-tag']) !!}
                     </div>
 
                     <div class="form-group">
@@ -71,11 +79,37 @@
 
 @section('js')
     <script>
-        $(".select-tag").chosen({
-            placeholder_text_multiple: "Select your tags"
-        });
         $(".select-category").chosen({
             placeholder_text_single: "Select a category"
+        });    
+            //initalize subcategories from category.
+        $.ajax({
+                
+                url: '{{ url('admin/subcategories/getfromcategory') }}' + '/' + $('.categories').val(),
+                type: 'GET',
+                success: function(data)   {
+                    $.each( data['data'], function( index, value ){                       
+                    $('.subcategories').append('<option value="'+value['id']+'">'+value['name']+'</option>');
+                    });
+                }
         });
+
+         $('.categories').on('change',function(){
+            console.log('CATEGORY ID ' + this.value);
+            $('.subcategories').html('');
+            var catid = this.value;
+            //search subcategories from category.
+            $.ajax({
+                
+                url: '{{ url('admin/subcategories/getfromcategory') }}' + '/' + catid,
+                type: 'GET',
+                success: function(data)   {
+                    $.each( data['data'], function( index, value ){
+                        console.log(value['id']);
+                    $('.subcategories').append('<option value="'+value['id']+'">'+value['name']+'</option>');
+                    });
+                }
+            });
+         });
     </script>
 @endsection

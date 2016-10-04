@@ -48,9 +48,9 @@ All Posts | The Public Post
                 @if($post->user()->first()->profile_image && $post->user()->first()->facebook_id == null && $post->user()->first()->twitter_id == null)
                     <img class="img-responsive center-block img-circle" src="{{asset('img/users/profile/profile_'.$post->user()->first()->profile_image)}}" alt="">
                 @elseif($post->user()->first()->facebook_id != null || $post->user()->first()->twitter_id != null )
-                 <img src="{{$post->user()->first()->profile_image}}" style="max-width:40px" alt="" class="img-circle center-block" alt="The Post Page"> 
+                 <img src="{{$post->user()->first()->profile_image}}" style="max-width:40px;" alt="" class="img-circle center-block" alt="The Post Page"> 
                 @else
-                <img src="{{asset('img/profile.png')}}" style="max-width:40px" alt="" class="img-circle center" alt="The Post Page ">
+                <img src="{{asset('img/profile.png')}}" style="max-width:40px;" alt="" class="img-circle center" alt="The Post Page ">
                 @endif
                     <p class="text-center user-name" data-user="{{$post->user()->first()->id}}">{{$post->user()->first()->name}}</p>
                     <p class="user-name text-center">Points: <span class=" userpoints"></span></p>
@@ -68,25 +68,32 @@ All Posts | The Public Post
                 $newtext = substr($text, 0, -$half);
                 $text2 =substr($text,$half);
                 echo "$newtext <br>";
+                $length2 = strlen($text2);
+                $half2 = ($length2 / 2);
+                $text3 =substr($text2,$half2);
+                echo "$text2 <br>";
+
 
                 ?>
+
+                <img class="img-responsive" src="{{asset('img/posts/slider_'.$post->images()->first()->name)}}" alt="">
                 <div class="col-md-3 col-sm-3 col-xs-3 divstyl1 astyl8">
                
                 <span class="icon icon-quote-left astyl7"></span>
                 {!!$post->featured_text!!}
                 </div>  
-                {!!$text2!!}
+                {!!$text3!!}
                 <div class="clearfix"></div>
-                @foreach($post->tags()->get() as $tag)
-
-                <span class="icon icon-price-tag pull-left">{!!$tag->name!!}</span> 
-                @endforeach
                 <br>
-                <!-- Social media plugin -->
-
-                <div class="center-block addthis_inline_share_toolbox_wzi8" addthis:url="{{url()->current()}}"></div>
+                </script>
+                <span class="icon icon-price-tag pull-left"></span>   ট্যাগ : 
+                @foreach($myTags as $tag)
+                  {{$tag}}
+                @endforeach
+                <hr>
+                <div class="center-block addthis_inline_share_toolbox_wzi8 F" addthis:url="{{url()->current()}}"></div>
                 <!-- Go to www.addthis.com/dashboard to customize your tools -->
-                <div class="addthis_inline_share_toolbox_bi9p" addthis:url="{{url()->current()}}" data-url="{{url()->current()}}"></div>
+                <div class="addthis_inline_share_toolbox_bi9p F" addthis:url="{{url()->current()}}" data-url="{{url()->current()}}"></div>
                 <div class="ad-post">
                 @if($bottomHorizontal != '')
                     <img src="{{asset('img/advs/adv_'.$bottomHorizontal)}}" alt="The Public Post News">

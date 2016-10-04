@@ -86,7 +86,7 @@ class AdvsController extends Controller
                 // Tell the validator that this file should be an image
 
                 /* TENGO QUE VALIDAD QUE TIPO DE ADV ES Y LISTO */
-                if($request->position == '0'){
+                if($request->position == '0'){ //top horizontal or bottom horizontal
 
                     $rules = array(
                         'image' => 'dimensions:min_width=732,min_height=94'//max 10000kb
@@ -94,42 +94,42 @@ class AdvsController extends Controller
                     $image->resize(732,94);
 
                 }
-                if($request->position == '1' || $request->position == '2'){
+                if($request->position == '1'){
 
                     $rules = array(
                         'image' => 'dimensions:min_width=300,min_height=250'//max 10000kb
                     );
                     $image->resize(300,250);
                 }
-                if($request->position == '3'){
-                    if($request->section == 'category' && $request->section == 'home' && $request->section == 'profile'){
+                if($request->position == '3'){ //vertical sidebar right
+                    if($request->section == 'category' || $request->section == 'home' || $request->section == 'profile' || $request->section == 'post_single'){
                        $rules = array(
-                            'image' => 'dimensions:min_width=426,min_height=350'//max 10000kb
-                        );                        
-                        $image->resize(426,350);
+                            'image' => 'dimensions:min_width=300,min_height=600'//max 10000kb
+                        );
+                    $image->resize(300,600);
                     }else{
                         Flash::error("This type of advertisement no exists on this section.");
                     }
 
                 }
-                if($request->position == '4'){
+                if($request->position == '4'){ // bottom square ad
 
                     $rules = array(
-                        'image' => 'dimensions:min_width=300,min_height=600'//max 10000kb
-                    );
-                    $image->resize(300,600);
+                        'image' => 'dimensions:min_width=426,min_height=350'//max 10000kb
+                    );                        
+                    $image->resize(426,350);
 
                 }
-                if($request->position == '5'){
+                if($request->position == '5'){ // bottom horizontal ad
 
                     $rules = array(
-                        'image' => 'dimensions:min_width=300,min_height=600'//max 10000kb
+                        'image' => 'dimensions:min_width=732,min_height=94'//max 10000kb
                     );
 
-                    $image->resize(300,600);
+                    $image->resize(732,94);
 
                 }
-                if($request->position == '6'){
+                if($request->position == '6'){ //horizontal bottom single
 
                     $rules = array(
                         'image' => 'dimensions:min_width=600,min_height=100'//max 10000kb
@@ -138,7 +138,7 @@ class AdvsController extends Controller
                     $image->resize(600,100);
 
                 }
-                if($request->position == '7'){
+                if($request->position == '7'){ //vertical aside video,photo,ebook
 
                     $rules = array(
                         'image' => 'dimensions:min_width=150,min_height=300'//max 10000kb
@@ -251,7 +251,6 @@ class AdvsController extends Controller
                 return redirect()->back()->withInput();
             }                   
             $adv = new Adv($request->all());
-            $adv->image = $picture;
             $adv->save();
             Flash::success("Adv <strong>".$adv->section."</strong> was created on position".$adv->position);
             return redirect()->route('admin.advs.index');

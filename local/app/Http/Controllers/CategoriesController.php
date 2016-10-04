@@ -31,7 +31,7 @@ class CategoriesController extends Controller
     public function index()
     {
         if(Auth::user()->type == 'admin'){
-            $categories = Category::orderBy('id','DESC')->paginate(4);
+            $categories = Category::orderBy('id','DESC')->paginate(20);
 
             return view('admin.categories.index')->with('categories',$categories);
         }else{

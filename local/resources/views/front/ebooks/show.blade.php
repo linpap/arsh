@@ -60,16 +60,7 @@
                                     @endif
                                 @endif
                             </p>
-                        </a>
-                        <a href="#" class="pull-left" style="margin-right:5px">
-                        @if(Auth::check())
-                            @if(Auth::user()->first()->profile_image && Auth::user()->first()->facebook_id == null && Auth::user()->first()->twitter_id == null)
-                            <img style="max-width:30px" alt="" class="img-circle" src="{{asset('img/users/profile/profile_'.Auth::user()->first()->profile_image)}}" alt="The Public Post">
-                            @elseif(Auth::user()->first()->facebook_id != null || Auth::user()->first()->twitter_id != null)
-                            <img style="max-width:30px" alt="" class="img-circle" src="{{Auth::user()->first()->profile_image}}" alt="The Public Post">
-                            @endif
-                        @endif
-                        </a>{{$ebook->user()->first()->name}} <span class="glyphicon glyphicon-time" style="margin-left:10px;margin-right:10px"> {{$ebook->created_at}}</span><span class="icon icon-eye"> {{$ebook->views()->count()}} মতামত</span><br><br>
+                            <span class="glyphicon glyphicon-time"></span>  {{$ebook->created_at}} <span class="icon icon-eye"> {{$ebook->views()->count()}} মতামত</span><br><br>
                         <a class="btn btn-primary" href="/{{$ebook->ebook_link}}">ডাউনলোড <span class="glyphicon glyphicon-chevron-right"></span></a>
                     </div>
                     <div class="ad-bottom col-lg-12">
@@ -99,9 +90,9 @@
                  {!!$ebook->content!!}      
                 
                 <div class="clearfix"></div>
-                @foreach($ebook->tags()->get() as $tag)
-
-                <span class="icon icon-price-tag pull-left">{!!$tag->name!!}</span> 
+                <span class="icon icon-price-tag pull-left"></span>   ট্যাগ : 
+                @foreach($myTags as $tag)
+                  {{$tag}}
                 @endforeach
                 <hr>
                 <!-- Social media plugin -->

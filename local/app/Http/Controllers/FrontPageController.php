@@ -30,14 +30,13 @@ class FrontPageController extends Controller
         $navbars = Navbar::orderBy('position','ASC')->get();
         $footers = Footer::orderBy('position','ASC')->get();
         $slider_posts = Post::orderBy('id','DESC')->where('status','approved')->paginate(5);
-        $lastest_posts = Post::orderBy('id','DESC')->where('status','approved')->with('post_category')->paginate(5);
+        $lastest_posts = Post::orderBy('id','DESC')->where('status','approved')->limit(5)->get();
         $pagination= Post::orderBy('id','DESC')->where('status','approved')->paginate(10, ['*'], 'p');
         $featured_posts = Post::orderBy('id','DESC')->where('status','approved')->where('featured','true')->paginate(3);
         $lastest_videos = Video::orderBy('id','DESC')->where('status','approved')->paginate(3);
         $lastest_photos = Photo::orderBy('id','DESC')->where('status','approved')->paginate(4);
         $lastest_ebooks = Ebook::orderBy('id','DESC')->where('status','approved')->paginate(4);
         $categories = Category::all();
-
         $rightblock = Rightblock::where('type','home')->first();
         $images = new Image();
         $featured_posts->each(function($post){
@@ -63,7 +62,11 @@ class FrontPageController extends Controller
                     $postimg->images;
                 });
         });
-        //dd($lastest_posts->items()[0]['user']);
+        $lastest_posts->each(function($post){
+                $post->images->each(function($postimg){
+                    $postimg->images;
+                });
+        });
 
         $advs = Adv::orderBy('position','DESC')->where('section','home')->get();
 
@@ -119,8 +122,6 @@ class FrontPageController extends Controller
                 }
             }
         }
-        
-    
        
         return view('front.welcome')
         ->with('advs',$advs)
@@ -138,7 +139,7 @@ class FrontPageController extends Controller
         ->with('thirdSidebarVerticalScript',$thirdSidebarVerticalScript)
         ->with('bottomHorizontalScript',$bottomHorizontalScript)
         ->with('slider_posts',$slider_posts)
-        ->with('lastest_posts',$lastest_posts->items())
+        ->with('lastest_posts',$lastest_posts)
         ->with('featured_posts',$featured_posts->items())
         ->with('lastest_videos',$lastest_videos)
         ->with('lastest_photos',$lastest_photos)

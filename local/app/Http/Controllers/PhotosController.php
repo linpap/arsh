@@ -30,7 +30,7 @@ class PhotosController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function getUserPosts($id){
-        $photos =  Photo::orderBy('id','DESC')->where('user_id',$id)->paginate(5);
+        $photos =  Photo::orderBy('id','DESC')->where('user_id',$id)->paginate(20);
         $photos->each(function($photos){
             $photos->category;
             $photos->images;
@@ -70,7 +70,7 @@ class PhotosController extends Controller
     public function index(Request $request)
     {
         if(Auth::user()->type != 'subscriber'){
-            $photos= Photo::Search($request->title)->orderBy('id','DESC')->where('user_id',Auth::user()->id)->paginate(5);
+            $photos= Photo::Search($request->title)->orderBy('id','DESC')->where('user_id',Auth::user()->id)->paginate(20);
             $photos->each(function($photos){
                 $photos->category;
                 $photos->images;
@@ -88,7 +88,7 @@ class PhotosController extends Controller
     {
 
         if(Auth::user()->type != 'subscriber'){
-            $photos= Photo::Search($request->title)->orderBy('id','DESC')->paginate(5);
+            $photos= Photo::Search($request->title)->orderBy('id','DESC')->paginate(20);
             $photos->each(function($photos){
                 $photos->category;
                 $photos->images;
@@ -112,14 +112,12 @@ class PhotosController extends Controller
     {
         if(Auth::user()->type != 'subscriber'){
                 $categories = Category::orderBy('name','ASC')->where('type','photo')->lists('name','id');
-                $sub_categories = Subcategory::orderBy('name','ASC')->get();
-                $tags =Tag::orderBy('name','ASC')->lists('name','id');
+                $subcategories = Subcategory::orderBy('name','ASC')->get();
                 $photos = Photo::orderBy('id','DESC')->paginate(4);
                 return view('admin.photos.create')
                 ->with('photos',$photos)
-                ->with('subcategories',$sub_categories)
-                ->with('categories',$categories)
-                ->with('tags',$tags);
+                ->with('subcategories',$subcategories)
+                ->with('categories',$categories);
         }else{
             Flash::error("You don't have permissions");
             return redirect()->route('admin.home');
@@ -137,6 +135,14 @@ class PhotosController extends Controller
 
 
         if(Auth::user()->type != 'subscriber'){
+                        //if pass all the validations we add the post and the images 
+                            
+            $tags = explode(',', $request->tags);
+            if(count($tags) > 5){
+                Flash::error('Maximun 5 tags per post. Please delete some tag.');
+            return redirect()->back()->withInput();
+
+            }
             //Check if the images are null or not.
             $fileArray0 = array('images' => $request->file('images')[0]);
             // Tell the validator that this file should be required
@@ -179,9 +185,14 @@ class PhotosController extends Controller
                             $category = Category::find($request['category_id']);
                             $photo->category()->associate($category);
                             $photo->subcategory_id=$request['subcategory_id'];
-                            $photo->save();
-                            //associate all tags for the photo
-                            $photo->tags()->sync($request->tags);
+                            $photo->save();  
+                            //associate all tags for the post
+                            foreach($tags as $tag){
+                            //create new tags exploding the commas.
+                            $newtag =\DB::table('photo_tag')->insert([
+                            ['photo_id' =>$photo->id,'tag_text' => $tag]
+                            ]);                                
+                            }   
 
                             $destinationPath = 'img/photos/';
                             $image->resize(null,600, function ($constraint) {
@@ -222,7 +233,7 @@ class PhotosController extends Controller
         $footers = Footer::orderBy('position','ASC')->get();
         $photo = Photo::where('id',$id)->first();
 
-        $photo->tags()->get();
+        $myTags = \DB::table('photo_tag')->where('photo_id',$id)->lists('tag_text');
         $comments = $photo->comments()->orderBy('id','DESC')->get();
         $comments->each(function($comments){
 
@@ -278,6 +289,7 @@ class PhotosController extends Controller
         $rightblock = Rightblock::where('type','photo_single')->first();
         return view('front.photos.show')
         ->with('rightblock',$rightblock)
+        ->with('myTags',$myTags)
         ->with('topHorizontalBanner',$topHorizontalBanner)
         ->with('thirdSidebarVertical',$thirdSidebarVertical)
         ->with('thirdSidebarVerticalScript',$thirdSidebarVerticalScript)
@@ -381,13 +393,10 @@ class PhotosController extends Controller
         $photo = Photo::find($id);
         if(Auth::user()->type == 'admin' || Auth::user()->type == 'editor' || $photo->user()->first()->id == Auth::user()->id){
             $categories = Category::orderBy('name','DESC')->where('type','photo')->lists('name','id');
-            $tags = Tag::orderBy('name','DESC')->lists('name','id');
-            $images = new Image();
-            $photo->images->each(function($photo){
-                $photo->images;
-            });
-            $myTags = $photo->tags->lists('id')->ToArray(); //give me a array with only the tags id.
-            return View('admin.photos.edit')->with('photo',$photo)->with('categories',$categories)->with('tags',$tags)->with('myTags',$myTags);
+            $subcategory = Subcategory::where('category_id',$photo->category_id)->lists('name','id');
+            $myTags = \DB::table('photo_tag')->where('photo_id',$id)->lists('tag_text');
+            $myTags = implode(',',$myTags);
+            return View('admin.photos.edit')->with('photo',$photo)->with('categories',$categories)->with('myTags',$myTags)->with('subcategory',$subcategory); 
         }else{
             Flash:error("You don't have permissions to do that.");
             return redirect()->route('admin.home');
@@ -405,6 +414,14 @@ class PhotosController extends Controller
     public function update(PhotoRequest $request, $id)
     {
         if(Auth::user()->type != 'subscriber'){
+        //if pass all the validations we add the post and the images 
+            
+            $tags = explode(',', $request->tags);
+            if(count($tags) > 5){
+                Flash::error('Maximun 5 tags per post. Please delete some tag.');
+            return redirect()->back()->withInput();
+
+            }
             $photo =Photo::find($id);
             if($request->featured){
                 $photo->featured = 'true';
@@ -415,7 +432,15 @@ class PhotosController extends Controller
             $photo->user_id = \Auth::user()->id;
 
             $photo->save();
-            $photo->tags()->sync($request->tags);
+            //avoid tag duplication....
+            $delete = \DB::table('photo_tag')->where('photo_id',$id)->delete();      
+            //associate all tags for the post
+            foreach($tags as $tag){
+            //create new tags exploding the commas.
+            $newtag =\DB::table('photo_tag')->insert([
+                ['photo_id' =>$photo->id,'tag_text' => $tag]
+            ]);                                
+            }  
             $picture = '';
 
             //Process Form Images

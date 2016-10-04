@@ -28,7 +28,7 @@ class EbooksController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function getUserPosts($id){
-        $ebooks =  Ebook::orderBy('id','DESC')->where('user_id',$id)->paginate(5);
+        $ebooks =  Ebook::orderBy('id','DESC')->where('user_id',$id)->paginate(20);
         $ebooks->each(function($ebooks){
             $ebooks->category;
             $ebooks->images;
@@ -70,7 +70,7 @@ class EbooksController extends Controller
     public function index(Request $request)
     {
         if(Auth::user()->type != 'subscriber'){
-            $ebooks= Ebook::Search($request->title)->orderBy('id','DESC')->where('user_id',Auth::user()->id)->paginate(5);
+            $ebooks= Ebook::Search($request->title)->orderBy('id','DESC')->where('user_id',Auth::user()->id)->paginate(20);
             $ebooks->each(function($ebooks){
                 $ebooks->category;
                 $ebooks->images;
@@ -87,7 +87,7 @@ class EbooksController extends Controller
     public function all(Request $request)
     {
         if(Auth::user()->type != 'subscriber'){
-            $ebooks= Ebook::Search($request->title)->orderBy('id','DESC')->paginate(5);
+            $ebooks= Ebook::Search($request->title)->orderBy('id','DESC')->paginate(20);
             $ebooks->each(function($ebooks){
                 $ebooks->category;
                 $ebooks->images;
@@ -111,14 +111,12 @@ class EbooksController extends Controller
     {
         if(Auth::user()->type != 'subscriber'){
                 $categories = Category::orderBy('name','ASC')->where('type','ebook')->lists('name','id');
-                $sub_categories = Subcategory::orderBy('name','ASC')->get();
-                $tags =Tag::orderBy('name','ASC')->lists('name','id');
+                $subcategories = Subcategory::orderBy('name','ASC')->get();
                 $ebooks = Ebook::orderBy('id','DESC')->paginate(4);
                 return view('admin.ebooks.create')
                 ->with('ebooks',$ebooks)
                 ->with('categories',$categories)
-                ->with('subcategories',$sub_categories)
-                ->with('tags',$tags);
+                ->with('subcategories',$subcategories);
         }else{
             Flash::error("You don't have permissions");
             return redirect()->route('admin.home');
@@ -134,69 +132,74 @@ class EbooksController extends Controller
     public function store(EbookRequest $request)
     {
         if(Auth::user()->type != 'subscriber'){
-            //Check if the images are null or not.
-            $fileArray0 = array('images' => $request->file('images')[0]);
+            if($request['ebook_link'] != '' && $request['ebooks'][0] != null){
+                Flash::error('You have to select one type of video');
+                return redirect()->back()->withInput();
+            }
+            //Check if the ebooks are null or not.
+            $fileArray0 = array('ebooks' => $request->file('ebooks')[0]);
             // Tell the validator that this file should be required
             $rules0 = array(
-                'images' => 'required'//max 10000kb
+                'ebooks*' => 'required'//max 10000kb
             );
+                        //if pass all the validations we add the post and the ebooks 
+                            
+            $tags = explode(',', $request->tags);
+            if(count($tags) > 5){
+                Flash::error('Maximun 5 tags per post. Please delete some tags.');
+                return redirect()->back()->withInput();
+            }
             // Now pass the input and rules into the validator
             $validator0 = \Validator::make($fileArray0, $rules0);       
             if($validator0->fails()){
                return redirect()->back()->withErrors($validator0)->withInput();
             }else{
             //Process Form Images
-            if ($request->hasFile('images')) {
-                $files = $request->file('images');
-                foreach($files as $file){             
 
+            if($request['video_link']){               
+                $ebook = new Ebook($request->except('ebooks','category_id','tags','subcategory_id'));
+                $ebook->user_id = \Auth::user()->id;
+               //associate category with ebook
+                $category = Category::find($request['category_id']);
+                $ebook->video_link = $request->video_link;
+                $ebook->category()->associate($category);
+                $ebook->subcategory_id=$request['subcategory_id'];
+                $ebook->save(); 
+                //associate all tags for the post
+                foreach($tags as $tag){
+                    //create new tags exploding the commas.
+                    $newtag =\DB::table('ebook_tag')->insert([
+                    ['ebook_id' =>$ebook->id,'tag_text' => $tag]
+                    ]);                                
+                }
+                Flash::success("Ebook <strong>".$ebook->title."</strong> was created.");
+                return redirect()->route('admin.ebooks.index');
+            }
+            if ($request->hasFile('ebooks')) {
+                $files = $request->file('ebooks');
+
+                foreach($files as $file){     
                         //Slider
                         $filename = $file->getClientOriginalName();
                         $extension = $file->getClientOriginalExtension();
-                        $picture = date('His').'_'.$filename;
-                        //make images sliders
-                        $image=\Image::make($file->getRealPath()); //Call image library installed.
-                        // Build the input for validation
-                        $fileArray = array('images' => $file);
-                        // Tell the validator that this file should be an image
-                        $rules = array(
-                            'images' => 'dimensions:min_width=*,min_height=450'//max 10000kb
-                        );
-                        // Now pass the input and rules into the validator
-                        $validator = \Validator::make($fileArray, $rules);
-                        
-                        if($validator->fails()){
-                            
-                            return redirect()->back()->withErrors($validator)->withInput();
-                        }else{
-                        //if pass all the validations we add the ebook and the images                        
-                            $ebook = new Ebook($request->except('images','category_id','tags','subcategory_id'));
-                            $ebook->user_id = \Auth::user()->id;
-                           //associate category with ebook
-                            $category = Category::find($request['category_id']);
-                            $ebook->category()->associate($category);
-                            $ebook->subcategory_id=$request['subcategory_id'];
-                            $ebook->save();  
-                            //associate all tags for the ebook
-                            $ebook->tags()->sync($request->tags);
-                           
-                            $destinationPath = 'img/ebooks/';
-                            $image->resize(null,280, function ($constraint) {
-                                $constraint->aspectRatio();
-                            });
-                            $image->save($destinationPath.'slider_'.$picture);
-                            // Thumbnails
-                            $image2=\Image::make($file->getRealPath()); //Call immage library installed.      
-                            //make images thumbnails                        
-                            $thumbPath ='img/ebooks/thumbs/';
-                            $image2->resize(100, 100);
-                            $image2->save($thumbPath.'thumb_'.$picture);
-                            //save image information on the db.
-                            $imageDb = new Image();
-                            $imageDb->name = $picture;
-                            $imageDb->ebook()->associate($ebook);
-                            $imageDb->save();       
-                        }        
+                        $ebookname = date('His').'_'.$filename;               
+                        $ebook = new Ebook($request->except('ebooks','category_id','tags','subcategory_id'));
+                        $ebook->user_id = \Auth::user()->id;
+                       //associate category with ebook
+                        $category = Category::find($request['category_id']);
+                        $ebook->filename = $ebookname;
+                        $ebook->category()->associate($category);
+                        $ebook->subcategory_id=$request['subcategory_id'];
+                        $ebook->save(); 
+                        //associate all tags for the post
+                        foreach($tags as $tag){
+                            //create new tags exploding the commas.
+                            $newtag =\DB::table('ebook_tag')->insert([
+                            ['ebook_id' =>$ebook->id,'tag_text' => $tag]
+                            ]);                                
+                        }
+                                $destinationPath = 'ebooks/';
+                                $file->move($destinationPath,'ebook_'.$ebookname);         
                 }
             }
             Flash::success("Ebook <strong>".$ebook->title."</strong> was created.");
@@ -218,8 +221,7 @@ class EbooksController extends Controller
         $navbars = Navbar::orderBy('position','ASC')->get();
         $footers = Footer::orderBy('position','ASC')->get();
         $ebook = Ebook::where('id',$id)->first();
-       
-        $ebook->tags()->get();
+        $myTags = \DB::table('ebook_tag')->where('ebook_id',$id)->lists('tag_text');
         $comments = $ebook->comments()->orderBy('id','DESC')->get();     
         $comments->each(function($comments){
 
@@ -228,6 +230,7 @@ class EbooksController extends Controller
         });
         $categories = Category::orderBy('name','DESC')->paginate(15);
         $related_ebooks = Ebook::orderBy('id','DESC')->paginate(3);
+
 
         $advs = Adv::orderBy('position','DESC')->where('section','ebook_single')->get();
 
@@ -257,6 +260,7 @@ class EbooksController extends Controller
         $rightblock = Rightblock::where('type','ebook_single')->first();
 
         return view('front.ebooks.show')
+        ->with('myTags',$myTags)
         ->with('rightblock',$rightblock)
         ->with('related_ebooks',$related_ebooks)
         ->with('topHorizontalBanner',$topHorizontalBanner)
@@ -342,13 +346,10 @@ class EbooksController extends Controller
         $ebook = Ebook::find($id); 
         if(Auth::user()->type == 'admin' || Auth::user()->type == 'editor' || $ebook->user()->first()->id == Auth::user()->id){            
             $categories = Category::orderBy('name','DESC')->where('type','ebook')->lists('name','id');
-            $tags = Tag::orderBy('name','DESC')->lists('name','id');
-            $images = new Image();
-            $ebook->images->each(function($ebook){
-                $ebook->images;
-            });
-            $myTags = $ebook->tags->lists('id')->ToArray(); //give me a array with only the tags id.
-            return View('admin.ebooks.edit')->with('ebook',$ebook)->with('categories',$categories)->with('tags',$tags)->with('myTags',$myTags);            
+            $subcategory = Subcategory::where('category_id',$ebook->category_id)->lists('name','id');
+            $myTags = \DB::table('ebook_tag')->where('ebook_id',$id)->lists('tag_text');
+            $myTags = implode(',',$myTags);
+            return View('admin.ebooks.edit')->with('ebook',$ebook)->with('categories',$categories)->with('myTags',$myTags)->with('subcategory',$subcategory);             
         }else{
             Flash:error("You don't have permissions to do that.");
             return redirect()->route('admin.home');
@@ -366,6 +367,13 @@ class EbooksController extends Controller
     public function update(EbookRequest $request, $id)
     {
         if(Auth::user()->type != 'subscriber'){
+            
+            $tags = explode(',', $request->tags);
+            if(count($tags) > 5){
+                Flash::error('Maximun 5 tags per post. Please delete some tag.');
+            return redirect()->back()->withInput();
+
+            }
             $ebook =Ebook::find($id);
             if($request->featured){
                 $ebook->featured = 'true';
@@ -376,59 +384,22 @@ class EbooksController extends Controller
             $ebook->user_id = \Auth::user()->id;
             
             $ebook->save();
-            $ebook->tags()->sync($request->tags);
-            $picture = '';
-
-            //Process Form Images
-            if ($request->hasFile('images')) {
-                $files = $request->file('images');
-
-                foreach($files as $file){            
-
-                        //Slider
-                        $filename = $file->getClientOriginalName();
-                        $extension = $file->getClientOriginalExtension();
-                        $picture = date('His').'_'.$filename;
-                        //make images sliders
-                        $image=\Image::make($file->getRealPath()); //Call image library installed.
-                        // Build the input for validation
-                        $fileArray = array('img' => $file);
-                        // Tell the validator that this file should be an image
-                        $rules = array(
-                            'img' => 'dimensions:min_width=*,min_height=450'//max 10000kb
-                        );
-                        // Now pass the input and rules into the validator
-                        $validator = \Validator::make($fileArray, $rules);
-                       
-                        if($validator->fails()){     
-                             Flash('* Images must be 450px tall.','danger');         
-                             return redirect()->back();
-                        }else{
-                            $destinationPath = 'img/ebooks/';
-                            $image->resize(null,280, function ($constraint) {
-                                $constraint->aspectRatio();
-                            });
-                            $image->save($destinationPath.'slider_'.$picture);
-                            // Thumbnails
-                            $image2=\Image::make($file->getRealPath()); //Call immage library installed.      
-                            //make images thumbnails                        
-                            $thumbPath ='img/ebooks/thumbs/';
-                            $image2->resize(100, 100);
-                            $image2->save($thumbPath.'thumb_'.$picture);
-                            //save image information on the db.
-                            $imageDb = new Image();
-                            $imageDb->name = $picture;
-                            $imageDb->ebook()->associate($ebook);
-                            $imageDb->save();       
-                        }
-                }
+            //avoid tag duplication....
+            $delete = \DB::table('ebook_tag')->where('ebook_id',$id)->delete();           
+            //associate all tags for the post
+            foreach($tags as $tag){
+                //create new tags exploding the commas.
+                $newtag =\DB::table('ebook_tag')->insert([
+                    ['ebook_id' =>$ebook->id,'tag_text' => $tag]
+                ]);                                
             }
             Flash::success('Ebook <strong>'.$ebook->title.'</strong> was updated.');
             return redirect()->back();
-        }else{
+        }
+        else{
                 Flash::error("You don't have permissions");
                 return redirect()->route('admin.home');
-        }
+            }
     }
 
     /**

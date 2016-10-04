@@ -25,7 +25,7 @@
                         </div>
                         <div class="form-group">
                             {!! Form::label('position','Position') !!}
-                            {!! Form::select('position', array(''=> 'Select Position',0 => 'Horizontal Top (732px x 94px)',1 => 'Sidebar First (300px x 250px)',2 => 'Sidebar Second (300px x 250px) ',3 => 'Sidebar Vertical Four (300px x 600px)',4 => 'Bottom Square (426px x 350px) ',5 => 'Horizontal Bottom(732px x 94px)',6 => 'Horizontal Bottom Single(600px x 100px)',7 => 'Square Right Photo or Video or Post Page(150px x 300px)'),null,['class'=> 'form-control select-category position','required']) !!}
+                            {!! Form::select('position', array(''=> 'Select Position',0 => 'Horizontal Top (732px x 94px)',1 => 'Sidebar First (300px x 250px)',3 => 'Sidebar Vertical Four (300px x 600px)',4 => 'Bottom Square (426px x 350px) ',5 => 'Horizontal Bottom(732px x 94px)',6 => 'Horizontal Bottom Single(600px x 100px)',7 => 'Square Right Photo or Video or Post Page(150px x 300px)'),null,['class'=> 'form-control select-category position','required']) !!}
                         </div>
 
                     <div class="form-group">
@@ -43,7 +43,7 @@
                     </div>
                     <div class="scriptadvertisement">
                         {!! Form::label('script','Copy and paste here your script') !!}
-                        {!! Form::textarea('script', null,['class' => 'form-control','required']) !!}
+                        {!! Form::textarea('script', null,['class' => 'form-control']) !!}
                     </div>
 
                     <div class="form-group">
@@ -60,7 +60,8 @@
 
 @section('js')
     <script> 
-        //hide all the possible position of advertisements.               
+        //hide all the possible position of advertisements.
+        function hideAll(){              
         $(".position option[value='0']").hide();
         $(".position option[value='1']").hide();                
         $(".position option[value='2']").hide();
@@ -69,23 +70,26 @@
         $(".position option[value='5']").hide();
         $(".position option[value='6']").hide();
         $(".position option[value='7']").hide();
+        }
+        hideAll();
 
         //Check for section changes and change position values foreach type of section.
         $('.section').on('change',function(){
-
+        hideAll();
+            if(this.value == 'post_single'){                              
+                $(".position option[value='3']").show();
+            }
             if(this.value == 'photo_single' || this.value == 'video_single'|| this.value == 'post_single'){ 
                //if photo single selected show this type of advs.               
                 $(".position option[value='0']").show();
                 $(".position option[value='1']").show();                
-                $(".position option[value='2']").show(); 
                 $(".position option[value='5']").show();
             }
             if(this.value == 'photo' || this.value == 'video'){  
                 //if video page or photo page show this type of advs.               
                 $(".position option[value='0']").show();
                 $(".position option[value='1']").show();                
-                $(".position option[value='2']").show();                
-                $(".position option[value='3']").show();
+                $(".position option[value='2']").show();
                 $(".position option[value='7']").show();
             }
             if(this.value == 'ebook'){  //if ebook single page show this type of advs.               

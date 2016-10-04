@@ -89,6 +89,7 @@ html,body{
 
     font-style: normal;
 
+
 }
 
 body{    
@@ -102,6 +103,7 @@ body{
     font-weight: normal;
 
     font-style: normal;
+    word-break: break-all;
 
     font-size:14px;
 

@@ -29,7 +29,7 @@ class VideosController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function getUserPosts($id){
-        $videos =  Video::orderBy('id','DESC')->where('user_id',$id)->paginate(5);
+        $videos =  Video::orderBy('id','DESC')->where('user_id',$id)->paginate(20);
         $videos->each(function($videos){
             $videos->category;
             $videos->images;
@@ -68,7 +68,7 @@ class VideosController extends Controller
     public function index(Request $request)
     {
         if(Auth::user()->type != 'subscriber'){
-            $videos= Video::Search($request->title)->orderBy('id','DESC')->where('user_id',Auth::user()->id)->paginate(5);
+            $videos= Video::Search($request->title)->orderBy('id','DESC')->where('user_id',Auth::user()->id)->paginate(20);
             $videos->each(function($videos){
                 $videos->category;
                 $videos->images;
@@ -85,7 +85,7 @@ class VideosController extends Controller
     public function all(Request $request)
     {
         if(Auth::user()->type != 'subscriber'){
-            $videos= Video::Search($request->title)->orderBy('id','DESC')->paginate(5);
+            $videos= Video::Search($request->title)->orderBy('id','DESC')->paginate(20);
             $videos->each(function($videos){
                 $videos->category;
                 $videos->images;
@@ -109,14 +109,12 @@ class VideosController extends Controller
     {
         if(Auth::user()->type != 'subscriber'){
                 $categories = Category::orderBy('name','ASC')->where('type','video')->lists('name','id');
-                $sub_categories = Subcategory::orderBy('name','ASC')->get();
-                $tags =Tag::orderBy('name','ASC')->lists('name','id');
+                $subcategories = Subcategory::orderBy('name','ASC')->get();
                 $videos = Video::orderBy('id','DESC')->paginate(4);
                 return view('admin.videos.create')
                 ->with('videos',$videos)
                 ->with('categories',$categories)
-                ->with('subcategories',$sub_categories)
-                ->with('tags',$tags);
+                ->with('subcategories',$subcategories);
         }else{
             Flash::error("You don't have permissions");
             return redirect()->route('admin.home');
@@ -136,6 +134,14 @@ class VideosController extends Controller
                 Flash::error('You have to select one type of video');
                 return redirect()->back()->withInput();
             }
+                        //if pass all the validations we add the post and the images 
+                            
+            $tags = explode(',', $request->tags);
+            if(count($tags) > 5){
+                Flash::error('Maximun 5 tags per post. Please delete some tag.');
+            return redirect()->back()->withInput();
+
+            }
             if($request['video_link']){
                 //if pass all the validations we add the video and the images                        
                 $video = new Video($request->except('category_id','tags','subcategory_id'));
@@ -145,8 +151,13 @@ class VideosController extends Controller
                 $video->category()->associate($category);
                 $video->subcategory_id=$request['subcategory_id'];
                 $video->save();  
-                //associate all tags for the video
-                $video->tags()->sync($request->tags);                                
+                //associate all tags for the post
+                foreach($tags as $tag){
+                //create new tags exploding the commas.
+                $newtag =\DB::table('tag_video')->insert([
+                ['video_id' =>$video->id,'tag_text' => $tag]
+                ]);                                
+                }                                
                 Flash::success("Video <strong>".$video->title."</strong> was created.");
                 return redirect()->route('admin.videos.index');
 
@@ -195,7 +206,12 @@ class VideosController extends Controller
                                     $video->filename = $vidname;
                                     $video->save();  
                                     //associate all tags for the video
-                                    $video->tags()->sync($request->tags);
+                                    foreach($tags as $tag){
+                                    //create new tags exploding the commas.
+                                    $newtag =\DB::table('tag_video')->insert([
+                                    ['video_id' =>$video->id,'tag_text' => $tag]
+                                    ]);                                
+                                    } 
                                    
                                     $destinationPath = 'videos/';
                                     $file->move($destinationPath,'vid_'.$vidname);   
@@ -223,8 +239,7 @@ class VideosController extends Controller
         $navbars = Navbar::orderBy('position','ASC')->get();
         $footers = Footer::orderBy('position','ASC')->get();
         $video = Video::where('id',$id)->first();
-   
-        $video->tags()->get();
+            $myTags = \DB::table('tag_video')->where('video_id',$id)->lists('tag_text');
         $comments = $video->comments()->orderBy('id','DESC')->get();     
         $comments->each(function($comments){
 
@@ -292,6 +307,7 @@ class VideosController extends Controller
         ->with('related_videos',$related_videos)
         ->with('categories',$categories)
         ->with('comments',$comments)
+        ->with('myTags',$myTags)
         ->with('video',$video)
         ->with('navbars',$navbars)
         ->with('footers',$footers);
@@ -376,10 +392,11 @@ class VideosController extends Controller
         $video = Video::find($id); 
         if(Auth::user()->type == 'admin' || Auth::user()->type == 'editor' || $video->user()->first()->id == Auth::user()->id){            
             $categories = Category::orderBy('name','DESC')->where('type','video')->lists('name','id');
-            $tags = Tag::orderBy('name','DESC')->lists('name','id');
-            $images = new Image();
-            $myTags = $video->tags->lists('id')->ToArray(); //give me a array with only the tags id.
-            return View('admin.videos.edit')->with('video',$video)->with('categories',$categories)->with('tags',$tags)->with('myTags',$myTags);            
+            $subcategory = Subcategory::where('category_id',$video->category_id)->lists('name','id');
+            $myTags = \DB::table('tag_video')->where('video_id',$id)->lists('tag_text');
+
+            $myTags = implode(',',$myTags);
+            return View('admin.videos.edit')->with('video',$video)->with('categories',$categories)->with('myTags',$myTags)->with('subcategory',$subcategory);            
         }else{
             Flash:error("You don't have permissions to do that.");
             return redirect()->route('admin.home');
@@ -397,6 +414,14 @@ class VideosController extends Controller
     public function update(Request $request, $id)
     {
         if(Auth::user()->type != 'subscriber'){
+        //if pass all the validations we add the post and the images 
+            
+            $tags = explode(',', $request->tags);
+            if(count($tags) > 5){
+                Flash::error('Maximun 5 tags per post. Please delete some tags.');
+            return redirect()->back()->withInput();
+
+            }
             $video =Video::find($id);
             if($request->featured){
                 $video->featured = 'true';
@@ -406,8 +431,18 @@ class VideosController extends Controller
             $video->fill($request->all());
             $video->user_id = \Auth::user()->id;
             
-            $video->save();
-            $video->tags()->sync($request->tags);
+            $video->save();        
+            //associate all tags for the post
+
+            //clean tags to avoid duplications...
+            $delete = \DB::table('tag_video')->where('video_id',$id)->delete();
+            foreach($tags as $tag){
+            //create new tags exploding the commas.
+            //add again if exist and keep adding others
+            $newtag =\DB::table('tag_video')->insert([
+                    ['video_id' =>$video->id,'tag_text' => $tag]
+                ]);                                
+            }
             Flash::success('Video <strong>'.$video->title.'</strong> was updated.');
             return redirect()->back();
         }else{

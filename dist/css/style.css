@@ -37,6 +37,9 @@
     font-size: 11px;
     font-weight: bold;
 }
+.fa{
+        color: #a5a5a5;
+}
 
 .user-name{
     font-size: 12px;
@@ -57,10 +60,10 @@
 body {
     background-color: #e7edee;
     padding-top: 65px;
-    font-family: 'Vrinda';
     font-weight: normal;
     font-style: normal;
     margin:0;
+    word-break: break-all;
 }
 .post{
     word-break: break-all;

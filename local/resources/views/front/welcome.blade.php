@@ -108,16 +108,17 @@
                     <a href="{{url('posts/'.$post->id)}}"><h3 style="margin:0">{{$post->title}}</h3></a>
                     @if($post->user()->first()->profile_image && $post->user()->first()->facebook_id == null && $post->user()->first()->twitter_id == null)
 
-                    <a href="{{url('posts/'.$post->id)}}" class="pull-left" style="margin-right:5px"><img src="{{asset('img/users/profile/profile_'.$post->user()->first()->profile_image)}}" class="img-responsive" width="20px" height="20px" alt=""></a>{{$post->user()->first()->name}} <span class="glyphicon glyphicon-time" style="margin-left:10px;margin-right:10px"> {{$post->created_at}}</span><span class="icon icon-eye">
+                    <a href="{{url('posts/'.$post->id)}}" class="pull-left" style="margin-right:5px"><img src="{{asset('img/users/profile/profile_'.$post->user()->first()->profile_image)}}" class="img-responsive" width="20px" height="20px" alt=""></a>{{$post->user()->first()->name}} 
 
                     @elseif($post->user()->first()->facebook_id != null && $post->user()->first()->twitter_id != null)
-                        <a href="#" class="pull-left" style="margin-right:5px"><img src="{{$post->user()->first()->profile_image}}" class="img-responsive" width="20px" height="20px" alt=""></a>{{$post->user()->first()->name}} <span class="glyphicon glyphicon-time" style="margin-left:10px;margin-right:10px"> {{$post->created_at}}</span>
+                        <a href="#" class="pull-left" style="margin-right:5px"><img src="{{$post->user()->first()->profile_image}}" class="img-responsive" width="20px" height="20px" alt=""></a>{{$post->user()->first()->name}}
                     @endif
                     <span class="icon icon-eye">
-                    {{$post->views()->count()}}  মতামত</span>                
+                    {{$post->views()->count()}} </span> <i class="fa fa-clock-o" aria-hidden="true"></i>
+{{$post->created_at}}               
                     <br><br>
                     <p class="post-content">{{ strip_tags(str_limit($post->content, 400))}}</p>
-                    <a class="btn btn-primary" href="{{url('categories/'.$post->post_category->id)}}">{{$post->post_category->name}}</span></a>
+                    <a class="btn btn-primary" href="{{url('categories/'.$post->category->id)}}">{{$post->category->name}}</span></a>
                 </div>
             </div>
             <!-- /.row -->

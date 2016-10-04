@@ -27,13 +27,6 @@
                         {!! Form::label('position','Position') !!}
                         {!! Form::select('position', array(''=> 'Select Position',0 => 'Horizontal Top (732px x 94px)',1 => 'Sidebar First (300px x 250px)',2 => 'Sidebar Second (300px x 250px) ',3 => 'Sidebar Vertical Four (300px x 600px)',4 => 'Bottom Square (426px x 350px) ',5 => 'Horizontal Bottom(732px x 94px)',6 => 'Horizontal Bottom Single(600px x 100px)',7 => 'Square Right Photo or Video or Post Page(150px x 300px)'),$adv->position,['class'=> 'form-control select-category position','required']) !!}
                     </div>
-                    @if($adv->script == '')                    
-                        <div class="form-group">
-                            {!! Form::label('image','Image') !!}
-
-                            {!! Form::file('image') !!}
-                        </div>
-                    @else
                     <div class="scriptadvertisement">
                         {!! Form::label('script','Copy and paste here your script') !!}
                         {!! Form::textarea('script', $adv->script,['class' => 'form-control','required']) !!}

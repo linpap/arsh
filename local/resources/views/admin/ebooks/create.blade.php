@@ -25,12 +25,12 @@
 
                     <div class="form-group">
                         {!! Form::label('category_id','Category') !!}
-                        {!! Form::select('category_id', $categories,null,['class'=> 'form-control select-category','required']) !!}
+                        {!! Form::select('category_id', $categories,null,['class'=> ' categories form-control select-category','required']) !!}
                     </div>
 
                     <div class="form-group">
                         {!! Form::label('subcategory_id','Sub-Category') !!}
-                        {!! Form::select('subcategory_id', array(),null,['class'=> 'form-control','required']) !!}
+                        {!! Form::select('subcategory_id', array(),null,['class'=> 'subcategories form-control',]) !!}
                     </div>
 
                     <div class="form-group">
@@ -47,9 +47,9 @@
                         {!! Form::text('ebook_link', null,['class'=> 'form-control','placeholder'=>'Copy and Paste Your Ebook Url']) !!}
                     </div>
                     <div class="form-group ebooknormal">
-                        {!! Form::label('images','Upload your PDF FILE') !!}
+                        {!! Form::label('ebooks','Upload your PDF FILE') !!}
 
-                        {!! Form::file('images[]', array('multiple'=>true)) !!}
+                        {!! Form::file('ebooks[]', array('multiple'=>true)) !!}
                         <br>
                     </div>
 
@@ -64,9 +64,10 @@
                         {{ Form::checkbox('featured', 'true') }}                         
                     </div>
                     @endif
+                    
                     <div class="form-group">
                         {!! Form::label('tags','Tags') !!}
-                        {!! Form::select('tags[]', $tags,null,['class'=> 'form-control select-tag','multiple']) !!}
+                        {!! Form::text('tags',null,['class'=> 'form-control select-tag']) !!}
                     </div>
 
                     <div class="form-group">
@@ -97,9 +98,6 @@
         $('.textarea-content').trumbowyg({
             
         });
-        $(".select-tag").chosen({
-            placeholder_text_multiple: "Select your tags"
-        });
         $(".select-category").chosen({
             placeholder_text_single: "Select a category"
         });
@@ -115,26 +113,36 @@
                 return false;
             }
         });
-
-        var category_array=JSON.parse('<?php echo $subcategories; ?>');
-
-        sunCategory("");
-
-        function sunCategory(category_id) {
-
-            if(category_id==""){
-                var category_id=$('.select-category  option:first').val();
-            }
-
-            var cateArr=[];
-            var html='';
-            $('#subcategory_id').html("");
-            for(var i=0;i<category_array.length;i++){
-                if(category_array[i].category_id==category_id){
-                    $('#subcategory_id').append('<option value="'+category_array[i].id+'">'+category_array[i].name+'</option>');
+            //initalize subcategories from category.
+        $.ajax({
+                
+                url: '{{ url('admin/subcategories/getfromcategory') }}' + '/' + $('.categories').val(),
+                type: 'GET',
+                success: function(data)   {
+                    $.each( data['data'], function( index, value ){                       
+                    $('.subcategories').append('<option value="'+value['id']+'">'+value['name']+'</option>');
+                    });
                 }
-            }
-        }
+        });
+
+         $('.categories').on('change',function(){
+            console.log('CATEGORY ID ' + this.value);
+            $('.subcategories').html('');
+            var catid = this.value;
+            //search subcategories from category.
+            $.ajax({
+                
+                url: '{{ url('admin/subcategories/getfromcategory') }}' + '/' + catid,
+                type: 'GET',
+                success: function(data)   {
+                    $.each( data['data'], function( index, value ){
+                        console.log(value['id']);
+                    $('.subcategories').append('<option value="'+value['id']+'">'+value['name']+'</option>');
+                    });
+                }
+            });
+         });
+
 
     </script>
 @endsection
