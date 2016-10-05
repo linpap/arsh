@@ -144,7 +144,6 @@
     
                     @if($ebook->first()->filename != '')
                     <div>
-                    <h2><a href="{{url('ebooks/'.$ebook->first()->id)}}">{{$ebook->first()->title}}</a></h2>
                     <object data="{{asset('ebooks/ebook_'.$ebook->first()->filename)}}" type="application/pdf" width="100%" height="250">
                     alt : <a href="{{asset('ebooks/ebook_'.$ebook->first()->filename)}}">{{$ebook->first()->title}}</a>
                     </object>

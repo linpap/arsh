@@ -14,13 +14,6 @@
             		</div>
             	{!! Form::close() !!}
             	<hr>
-
-            	{!! Form::open(['route' => 'admin.sidebars.notification','method' => 'POST']) !!}
-                    <div class="form-group">
-                        {!! Form::label('notification','Notification') !!}
-                        {!! Form::text('notification', null,['class'=> 'form-control','placeholder'=>'Type here']) !!}
-                    </div>
-            	{!! Form::close() !!}
             	
 				<table class="tablesorter table" id="myTable" data-count="{{count($sidebars)}}"> <!-- Get count to validate 3 post only and don't break the front end -->
 					<thead>
